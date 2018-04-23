@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WOMOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="INZipCodes">
+    <Key>
+      <PropertyRef Name="ZipCodeId" />
+    </Key>
+    <Property Name="ZIP Code" Type="float" />
+    <Property Name="ZipCodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'WOMO.dbo.TTBWinePermits' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="TTBWinePermits">
+    <Key>
+      <PropertyRef Name="WinePermitId" />
+    </Key>
+    <Property Name="PERMIT NUMBER" Type="nvarchar" MaxLength="255" />
+    <Property Name="OWNER NAME" Type="nvarchar" MaxLength="255" />
+    <Property Name="OPERATING NAME" Type="nvarchar" MaxLength="255" />
+    <Property Name="STREET" Type="nvarchar" MaxLength="255" />
+    <Property Name="CITY" Type="nvarchar" MaxLength="255" />
+    <Property Name="STATE" Type="nvarchar" MaxLength="255" />
+    <Property Name="ZIP" Type="float" />
+    <Property Name="ZIP4" Type="float" />
+    <Property Name="COUNTY" Type="nvarchar" MaxLength="255" />
+    <Property Name="FullAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="Lat" Type="float" />
+    <Property Name="Lng" Type="float" />
+    <Property Name="WinePermitId" Type="int" Nullable="false" />
+    <Property Name="ZipCodeId" Type="int" />
+  </EntityType>
+  <EntityContainer Name="WOMOModelStoreContainer">
+    <EntitySet Name="INZipCodes" EntityType="Self.INZipCodes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TTBWinePermits" EntityType="Self.TTBWinePermits" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TTBWinePermits].[PERMIT NUMBER] AS [PERMIT NUMBER], 
+    [TTBWinePermits].[OWNER NAME] AS [OWNER NAME], 
+    [TTBWinePermits].[OPERATING NAME] AS [OPERATING NAME], 
+    [TTBWinePermits].[STREET] AS [STREET], 
+    [TTBWinePermits].[CITY] AS [CITY], 
+    [TTBWinePermits].[STATE] AS [STATE], 
+    [TTBWinePermits].[ZIP] AS [ZIP], 
+    [TTBWinePermits].[ZIP4] AS [ZIP4], 
+    [TTBWinePermits].[COUNTY] AS [COUNTY], 
+    [TTBWinePermits].[FullAddress] AS [FullAddress], 
+    [TTBWinePermits].[Lat] AS [Lat], 
+    [TTBWinePermits].[Lng] AS [Lng], 
+    [TTBWinePermits].[WinePermitId] AS [WinePermitId], 
+    [TTBWinePermits].[ZipCodeId] AS [ZipCodeId]
+    FROM [dbo].[TTBWinePermits] AS [TTBWinePermits]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

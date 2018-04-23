@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WOMOModelStoreContainer" CdmEntityContainer="WOMOEntities">
+    <EntitySetMapping Name="INZipCodes">
+      <EntityTypeMapping TypeName="WOMOModel.INZipCode">
+        <MappingFragment StoreEntitySet="INZipCodes">
+          <ScalarProperty Name="ZipCodeId" ColumnName="ZipCodeId" />
+          <ScalarProperty Name="ZIP_Code" ColumnName="ZIP Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TTBWinePermits">
+      <EntityTypeMapping TypeName="WOMOModel.TTBWinePermit">
+        <MappingFragment StoreEntitySet="TTBWinePermits">
+          <ScalarProperty Name="ZipCodeId" ColumnName="ZipCodeId" />
+          <ScalarProperty Name="WinePermitId" ColumnName="WinePermitId" />
+          <ScalarProperty Name="Lng" ColumnName="Lng" />
+          <ScalarProperty Name="Lat" ColumnName="Lat" />
+          <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+          <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+          <ScalarProperty Name="ZIP4" ColumnName="ZIP4" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="STATE" ColumnName="STATE" />
+          <ScalarProperty Name="CITY" ColumnName="CITY" />
+          <ScalarProperty Name="STREET" ColumnName="STREET" />
+          <ScalarProperty Name="OPERATING_NAME" ColumnName="OPERATING NAME" />
+          <ScalarProperty Name="OWNER_NAME" ColumnName="OWNER NAME" />
+          <ScalarProperty Name="PERMIT_NUMBER" ColumnName="PERMIT NUMBER" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
