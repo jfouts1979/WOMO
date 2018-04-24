@@ -1,8 +1,6 @@
 ﻿using System.Web.Mvc;
-using System.Xml.Linq;
 using WineOnMyOwn.Models;
 using System;
-using System.Web.Mvc;
 using System.Collections.Generic;
 
 namespace WineOnMyOwn.Controllers
@@ -25,14 +23,15 @@ namespace WineOnMyOwn.Controllers
 
         private static Random _rnd = new Random();
         private static List<string> _db = new List<string> { "Yes", "No", "Definitely, yes", "I don't know", "Looks like, yes" };
+
+        //***********************************************************
+        //*** Get Map Radius Markers Within User Specified Radius ***
+        //***********************************************************
+
+        public JsonResult GetRadiusMarkers(List<TTBWinePermit> getMarkers)
+        {
+            List<TTBWinePermit> wineMarkers = MapRepository.GetTTBWinePermits();
+            return Json(wineMarkers, JsonRequestBehavior.AllowGet);
+        }
     }
-
-
-
-    //public ActionResult GetRadiusMap()
-    //    {
-    //        winePermitsList = MapRepository.GetTTBWinePermits();
-    //        return View("RadiusMap", winePermitsList);
-    //    }
-
 }

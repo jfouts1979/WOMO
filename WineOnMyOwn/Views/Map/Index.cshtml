@@ -241,6 +241,20 @@
             });
         }
     }
+
+    function buttonclick() {
+        var requestDataJSON = {
+            lati: 'latitude',
+            longi: 'longitude'
+        };
+
+        $.ajax({
+            url: '/Map/populate_place',
+            type: 'POST',
+            data: requestData,
+            dataType: 'json'
+        });
+    };
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8&callback=initMap">

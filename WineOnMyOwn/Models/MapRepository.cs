@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using WineOnMyOwn.Models;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
@@ -11,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Xml.Linq;
-using Dapper;
 
 namespace WineOnMyOwn.Models
 {
@@ -75,14 +71,14 @@ namespace WineOnMyOwn.Models
             return null;
         }
 
-        //***************************************************************
-
-        //WOMOEntities db = new WOMOEntities();
+        //*************************************************
+        //*** Returns Count of Records in Permits Table ***
+        //*************************************************
 
         public static int countPermitRecords()
         {
             string stmt = "SELECT COUNT(*) FROM dbo.TTBWinePermits";
-            int count = 0;
+            int count;
 
             using (SqlConnection thisConnection = new SqlConnection(GetConnectionString()))
             {
@@ -96,12 +92,17 @@ namespace WineOnMyOwn.Models
             return count;
         }
 
-        //**************************************************************
-        public static List<int> GetTTBWinePermits()
+        //*************************************************************
+        //*** Returns A List of TTB Permits Within Specified Radius ***
+        //*************************************************************
+        public static List<TTBWinePermit> GetTTBWinePermits()
         {
             using (WOMOEntities db = new WOMOEntities())
             {
-                List<int> permitList = new List<int>();
+                //List<int> permitListInt = new List<int>();
+                List<TTBWinePermit> permitRecordRadiusList = new List<TTBWinePermit>();
+
+                //This needs to be updated to grab coordinates from user's phone/device
                 var louisvilleLat = 38.328732;
                 var louisvilleLng = -85.764771;
 
@@ -113,16 +114,17 @@ namespace WineOnMyOwn.Models
                         double lng = (double)permit.Lng;
 
                         var distance = distance2PointsAsCrowFlies(lat, lng, louisvilleLat, louisvilleLng);
-                        if (distance < 50)
+
+                        //Needs to be established as a setting from the user
+                        var radius = 50;
+                        if (distance < radius)
                         {
-                            permitList.Add(permit.WinePermitId);
-                            GetTTBWinePermitById(permit.WinePermitId); // only here for testing - need to move
+                            permitRecordRadiusList.Add(permit); 
                         }
                     }
                 }
-                return permitList;
+                return permitRecordRadiusList;
             }
-            return null;
         }
         //**************************************************************
         //**************************************************************
