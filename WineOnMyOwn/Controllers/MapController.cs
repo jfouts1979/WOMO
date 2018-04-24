@@ -27,8 +27,8 @@ namespace WineOnMyOwn.Controllers
         //***********************************************************
         //*** Get Map Radius Markers Within User Specified Radius ***
         //***********************************************************
-
-        public JsonResult GetRadiusMarkers(List<TTBWinePermit> getMarkers)
+        [HttpGet]
+        public ActionResult GetRadiusMarkers()
         {
             List<TTBWinePermit> wineMarkers = MapRepository.GetTTBWinePermits();
             return Json(wineMarkers, JsonRequestBehavior.AllowGet);

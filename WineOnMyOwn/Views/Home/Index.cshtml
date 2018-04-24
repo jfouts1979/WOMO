@@ -4,18 +4,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxCMbyRjM4ScTIIaZM3uX6Jb9FPicOEMA&callback=initialize"></script>
 <script>
-    //var map = new GMap2(document.getElementById("map_canvas"));
-    //var geocoder = new GClientGeocoder();
 
-    //var address = "2321 Glenmary Ave. Apt 2, Louisville, KY  40204";
-    //geocoder.getLatLng(address, function (point) {
-    //    var latitude = point.y;
-    //    var longitude = point.x;
-
-    //    // do something with the lat lng
-    //});
-
-    google.load("maps", "2");
     // make a json request to get the map data from the Map action
     $(function () {
         if (google.maps.BrowserIsCompatible()) {

@@ -133,7 +133,7 @@ namespace WineOnMyOwn.Models
             using (WOMOEntities db = new WOMOEntities())
             {
                 var permit = db.TTBWinePermits.FirstOrDefault(p => p.WinePermitId == winePermitId);
-                return permit;
+                return new[] {permit};
             }
             
         }

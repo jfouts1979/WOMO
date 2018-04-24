@@ -1,240 +1,95 @@
-﻿@*@model WineOnMyOwn.Models.SampleViewModel
-@{
-    Layout = null;
-}*@
-<!-- CSS Includes -->
-@*<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">*@
+﻿<head>
+    <title></title>
 
-@*<div class="col-lg-7" id="dvMap" style="height:250px;"> </div>*@
-
-@*<div id="map_canvas"></div>*@
-@*<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8&callback=initMap" async defer></script>*@
-
-@*<script type="text/javascript">
-    function initMap() {
-        //map..
-        var map = new google.maps.Map(document.getElementById('dvMap'), {
-            center: {
-                lat: 38.328732,
-                lng: -85.764771
-            },
-            zoom: 9
-        });*@
-
-        @*var data = [
-            { "Id": 1, "PlaceName": "Seymour", "GeoLong": "38.9592", "GeoLat": "-85.8412" },
-            { "Id": 2, "PlaceName": "Salem", "GeoLong": "38.6056", "GeoLat": "-86.1011" }
-            //{ "Id": 3, "PlaceName": "Sousse", "GeoLong": "35.8329809", "GeoLat": "10.63875" },
-            //{ "Id": 4, "PlaceName": "Sfax", "GeoLong": "34.745159", "GeoLat": "10.7613" }
-        ];
-
-        // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
-        $.each(data, function (i, item) {
-            var marker = new google.maps.Marker({
-                'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                'map': map,
-                'title': item.PlaceName
-            });
-
-
-            ////marker..
-            //var marker = new google.maps.Marker({
-            //    position: {
-            //        lat: 38.328732,
-            //        lng: -85.764771
-            //    },
-            //    map: map,
-            //    draggable: true
-
-            //});
-
-            //var locationList = new Array(‘40.756012, -73.972614’, ‘40.456012, -73.796087’, ‘40.456012, -73.456807’);
-
-            //for (var i = 0; i < locationList.length; i++) {
-            //    var args = locationList[i].split(',');
-            //    var location = new google.maps.LatLng(args[0], args[1]);
-            //    var marker = new google.maps.Marker({
-            //    position: location,
-            //        map: map
-            //    });
-
-            //dragend event of marker
-            google.maps.event.addListener(marker,
-                'dragend',
-                function () {
-                    var Lats = marker.getPosition().lat();
-                    var Longs = marker.getPosition().lng();
-
-                    $('#Lat').val(Lats);
-                    $('#Long').val(Longs);
-
-                });
-        };
-</script>*@
-
-@*<script type="text/javascript">
-
-
-            $(document).ready(function () {
-                Initialize();
-            });
-
-        // Where all the fun happens
-        function Initialize() {
-
-            // Google has tweaked their interface somewhat - this tells the api to use that new UI
-            google.maps.visualRefresh = true;
-            var Louisville = new google.maps.LatLng(38.328732, -85.764771);
-
-            // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
-            var mapOptions = {
-                zoom: 8,
-                center: Louisville,
-                mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
-            };
-
-            // This makes the div with id "map_canvas" a google map
-            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
-            // a sample list of JSON encoded data of places to visit in Tunisia
-            // you can either make up a JSON list server side, or call it from a controller using JSONResult
-            var data = [
-                {"GeoLong": "38.9592", "GeoLat": "-85.8432"},
-                {"GeoLong": "38.6056", "GeoLat": "-86.1011"}
-
-            ];
-
-            // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
-            $.each(data, function (i, item) {
-                var marker = new google.maps.Marker({
-                    'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                    'map': map,
-                    //'title': item.PlaceName
-                });
-
-                // Make the marker-pin blue!
-                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
-
-                // put in some information about each json object - in this case, the opening hours.
-                var infowindow = new google.maps.InfoWindow({
-                    content: "<div class='infoDiv'><h2>" + item.PlaceName + "</div></div>"
-                });
-
-                // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
-                google.maps.event.addListener(marker, 'click', function () {
-                    infowindow.open(map, marker);
-                });
-
-            })
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            height: 400px;
+            width: 400px;
         }
-
-
-    </script>*@
-
-@*<script type="text/javascript">
-
-        $(document).ready(function () {
-            Initialize();
-        });
-
-    // Where all the fun happens
-    function Initialize() {
-
-        // Google has tweaked their interface somewhat - this tells the api to use that new UI
-        google.maps.visualRefresh = true;
-        var Tunisie = new google.maps.LatLng(36.81881, 10.16596);
-
-        // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
-        var mapOptions = {
-            zoom: 8,
-            center: Tunisie,
-            mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
-        };
-
-        // This makes the div with id "map_canvas" a google map
-        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
-        // a sample list of JSON encoded data of places to visit in Tunisia
-        // you can either make up a JSON list server side, or call it from a controller using JSONResult
-        var data = [
-            { "Id": 1, "PlaceName": "Zaghouan", "GeoLong": "36.401081", "GeoLat": "10.16596" },
-            { "Id": 2, "PlaceName": "Hammamet ", "GeoLong": "36.4", "GeoLat": "10.616667" },
-            { "Id": 3, "PlaceName": "Sousse", "GeoLong": "35.8329809", "GeoLat": "10.63875" },
-            { "Id": 4, "PlaceName": "Sfax", "GeoLong": "34.745159", "GeoLat": "10.7613" }
-        ];
-
-        // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
-        $.each(data, function (i, item) {
-            var marker = new google.maps.Marker({
-                'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                'map': map,
-                'title': item.PlaceName
-            });
-
-            // Make the marker-pin blue!
-            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
-
-            // put in some information about each json object - in this case, the opening hours.
-            var infowindow = new google.maps.InfoWindow({
-                content: "<div class='infoDiv'><h2>" + item.PlaceName + "</div></div>"
-            });
-
-            // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.open(map, marker);
-            });
-
-        })
-    }
-
-
-</script>*@
-
-<style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-    #map {
-        height: 400px;
-        width: 400px;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-</style>
-<br />
-<br />
-<br/>
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head><br /><br /><br />
 
 <div id="map"></div>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     var map;
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 7,
-            center: new google.maps.LatLng(38.328732, -85.764771),
-            mapTypeId: 'terrain'
-        });
 
-        // Create a <script> tag and set the USGS URL as the source.
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'),
+            {
+                zoom: 7,
+                center: new google.maps.LatLng(38.328732, -85.764771),
+                mapTypeId: 'terrain'
+            });
+
         var script = document.createElement('script');
-        // This example uses a local copy of the GeoJSON stored at
-        // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
-        script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
-        document.getElementsByTagName('head')[0].appendChild(script);
+
+        $.ajax({
+            url: "/Map/GetRadiusMarkers",
+            dataType: "json",
+            type: "GET",
+            contentType: 'application/json; charset=utf-8', //define a contentType of your request
+            cache: false,
+
+
+            success: function (data) { //data is your result from controller
+                //if (data.Success ==  true) {
+                //    alert('here');
+                //for (var i = 0; i < data.length; i++) {
+                //    alert(data[0].Lat);
+                //    alert(data[0].Lng);
+                //data: { Lat: data.latitude};
+                // access each item like this. if list is of any complex type the use result[0].Name // say name is a proprty of the complex type
+                //}
+
+
+                //for (var i = 0; i < data[0].length; i++) {
+                //var latitude = data[i].Lat;
+                //var longitude = data[i].Lng;
+                //var latLng = new google.maps.LatLng(latitude,longitude);
+                //var marker = new google.maps.Marker({
+                //    position: latLng,
+                //    map: map
+                //});
+                //}
+
+                jQuery.each(data,
+                    function (index, value) {
+                        //console.log(value);
+                        var latitude = data[index].Lat;
+                        var longitude = data[index].Lng;
+                        var latLng = new google.maps.LatLng(latitude, longitude);
+                        var marker = new google.maps.Marker({
+                            position: latLng,
+                            map: map
+                        });
+                    });
+            }
+            //var script = document.createElement('script');
+            //script.src = data;
+            //document.getElementsByTagName('head')[0].appendChild(script);
+            //map.data.loadGeoJson(data.json);
+            // Loop through the results array and place a marker for each
+            // set of coordinates.
+            //}
+
+        
+        });
     }
 
-    // Loop through the results array and place a marker for each
-    // set of coordinates.
-    window.eqfeed_callback = function(results) {
+    window.eqfeed_callback = function (results) {
         for (var i = 0; i < results.features.length; i++) {
-            var coords = results.features[i].geometry.coordinates;
-            var latLng = new google.maps.LatLng(coords[1],coords[0]);
+            var latcoord = results.features[i].data.latitude;
+            var lngcoord = results.features[i].data.longitude;
+            var latLng = new google.maps.LatLng(lngcoord, latcoord);
             var marker = new google.maps.Marker({
                 position: latLng,
                 map: map
@@ -242,19 +97,7 @@
         }
     }
 
-    function buttonclick() {
-        var requestDataJSON = {
-            lati: 'latitude',
-            longi: 'longitude'
-        };
 
-        $.ajax({
-            url: '/Map/populate_place',
-            type: 'POST',
-            data: requestData,
-            dataType: 'json'
-        });
-    };
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8&callback=initMap">

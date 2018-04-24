@@ -14,7 +14,7 @@ namespace WineOnMyOwn.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TTBWinePermit : IEnumerable<TTBWinePermit>
+    public partial class TTBWinePermit 
     {
         public string PERMIT_NUMBER { get; set; }
         public string OWNER_NAME { get; set; }
@@ -30,14 +30,14 @@ namespace WineOnMyOwn.Models
         public Nullable<double> Lng { get; set; }
         public int WinePermitId { get; set; }
         public Nullable<int> ZipCodeId { get; set; }
-        public IEnumerator<TTBWinePermit> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+        //public IEnumerator<TTBWinePermit> GetEnumerator()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return GetEnumerator();
+        //}
     }
 }
