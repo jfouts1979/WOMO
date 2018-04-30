@@ -156,7 +156,7 @@ function createOption(name, distance, num) {
 	var option = document.createElement("option");
 	option.value = num;
 	option.innerHTML = name;
-	locationSelect.appendChild(option);
+	locationSelect.append(option);
 }
 
 
@@ -172,6 +172,6 @@ function clearLocations() {
 	var option = document.createElement("option");
 	option.value = "none";
 	option.innerHTML = "See all results:";
-	locationSelect.appendChild(option);
+	locationSelect.append(option);
 	locationSelect.style.visibility = "visible";
 }
