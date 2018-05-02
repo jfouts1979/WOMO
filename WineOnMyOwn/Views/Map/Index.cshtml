@@ -1,7 +1,7 @@
-﻿
+﻿@*<img src="~/Content/grapesicon.jpg" alt="grapesicon">;*@
 <style>
     /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
+     * element that contains the map. */
     #map {
         height: 400px;
         width: 400px;
@@ -11,6 +11,7 @@
         height: 400px;
         width: 400px;
     }
+
     /* Optional: Makes the sample page fill the window. */
     html, body {
         height: 100%;
@@ -25,16 +26,62 @@
 </style>
 <br /><br /><br />
 
+@*//***********************************************
+    //************** Map Marker Div *****************
+    //***********************************************@
+
 <div id="map"></div>
+
+@*//***********************************************
+    //************** Initializations ****************
+    //***********************************************@
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+
+
+
+    //***********************************************
+    //************* Get Geolocation *****************
+    //***********************************************
+
     var map;
+    var latitudeGlobal;
+    var longitudeGlobal;
+
+    function onGetLocationSuccess(position) {
+        latitudeGlobal = position.coords.latitude;
+        longitudeGlobal = position.coords.longitude;
+        initMap();
+
+    }
+
+    function onGetLocationError() {
+
+        alert("Unable to retrieve your location");
+    }
+
+    function getLocation(position) {
+
+        if (!navigator.geolocation) {
+            output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);
+    }
+
+    getLocation();
+
+    //***********************************************
+    //************* Initialize Map  *****************
+    //***********************************************
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'),
             {
                 zoom: 8,
-                center: new google.maps.LatLng(38.328732, -85.764771),
+                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
                 mapTypeId: 'terrain'
 
             });
@@ -46,8 +93,14 @@
             }
         }
 
+        //******************************************************
+        //************* Ajax Get Marker Radius *****************
+        //******************************************************
+
+        var data = { lat: latitudeGlobal, lng: longitudeGlobal }
         $.ajax({
             url: "/Map/GetRadiusMarkers",
+            data: data,
             dataType: "json",
             type: "GET",
             contentType: 'application/json; charset=utf-8', //define a contentType of your request
@@ -58,37 +111,46 @@
                 jQuery.each(data,
                     function (index) {
                         var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-                        //var image = 'grapesicon.jpg';
-                        var infowindow = new google.maps.InfoWindow({
-                            content: data[index].OWNER_NAME
-                        });
-                        var latitude = data[index].Lat;
+                        //var image = "~/Content/grapesicon.jpg";*/
+                        var infowindow= new google.maps.InfoWindow({
+                                    content: data[index].OWNER_NAME
+                                });
+                            var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
                         var latLng = new google.maps.LatLng(latitude, longitude);
                         var marker = new google.maps.Marker({
-                            position: latLng,
+                                position: latLng,
                             map: map,
                             icon: image
                         });
                     });
+                var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+                var centralMarker = new google.maps.Marker({
+                    position: {lat: latitudeGlobal, lng: longitudeGlobal },
+                    map: map,
+                    icon: im  
+                });
             }
         });
 
         //*** End Of Ajax ***//
 
-        var rad = 50; // Radius of circle in miles.
+        //***********************************************
+        //************* Make Map Circle *****************
+        //***********************************************
 
-        var center = { lat: 38.328732, lng: -85.764771 }; // LatLng of center point of circle
+        var rad = 50;                                     // Radius of circle in miles.
+        var center = {lat: latitudeGlobal, lng: longitudeGlobal }; // LatLng of center point of circle
+        var draw_circle = null;                           // object of google maps polygon for redrawing the circle
 
-        var draw_circle = null;  // object of google maps polygon for redrawing the circle
         function DrawCircle(rad) {
 
-            rad *= 1600; // convert to meters if in miles
-            if (draw_circle != null) {
-                draw_circle.setMap(null);
-            }
+                                rad *= 1600;                                  // convert to meters if in miles
+                            if (draw_circle != null) {
+                                draw_circle.setMap(null);
+                            }
             draw_circle = new google.maps.Circle({
-                center: center,
+                                center: center,
                 radius: rad,
                 strokeColor: "#800080",
                 strokeOpacity: 0.8,
@@ -98,79 +160,59 @@
                 map: map
             });
         }
-
         DrawCircle(50);
     }
-    function geoFindMe() {
-        //var output = document.getElementById("out");
-        var output = $('#out');
 
-        if (!navigator.geolocation) {
-            output.html("<p>Geolocation is not supported by your browser</p>");
-            return;
-        }
 
-        function success(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            //alert('Your latitude is: ' + latitude);
-            //alert('Your longitude is: ' + longitude);
+    //function geoFindMe() {
+                                //    //var output = document.getElementById("out");
+                                //    var output = $('#out');
 
-            output.html('<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>');
+                                //    if (!navigator.geolocation) {
+                                //        output.html("<p>Geolocation is not supported by your browser</p>");
+                                //        return;
+                                //    }
 
-            var img = new Image();
-            img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + latitude + "," + longitude + "&size=400x400&markers=color:blue%7Clabel:S%7C" + latitude + "," + longitude + "&zoom=15";
+                                //    function success(position) {
+                                //        var latitude = position.coords.latitude;
+                                //        var longitude = position.coords.longitude;
+                                //        latitudeGlobal = latitude;
+                                //        longitudeGlobal = longitude;
+                                //        output.html('<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>');
 
-            output.append(img);
-        }
+                                //        var img = new Image();
+                                //        img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + latitude + "," + longitude + "&size=400x400&markers=color:blue%7Clabel:S%7C" + latitude + "," + longitude + "&zoom=15";
 
-        function error() {
-            output.innerHTML = "Unable to retrieve your location";
-        }
+                                //        output.append(img);
+                                //    }
 
-        output.innerHTML = "<p>Locating…</p>";
+                                //    function error() {
+                                //        //output.innerHTML = "Unable to retrieve your location";
+                                //        alert('Error here.');
+                                //    }
 
-        navigator.geolocation.getCurrentPosition(success, error);
-    }
+                                //    //output.innerHTML = "<p>Locating…</p>";
+
+                                //    navigator.geolocation.getCurrentPosition(success, error);
+
+                                //}
+
+                                //geoFindMe();
+
+                                watchLocationOptions = {
+                                    enableHighAccuracy: true,
+                                    timeout: 5000,
+                                    maximumAge: 0
+                                };
+
+                            var id = navigator.geolocation.watchPosition(getLocation, onGetLocationError, watchLocationOptions);
 
 </script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">
 </script>
 
-<!-- Learn about this code on MDN: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation -->
-
-<p><button onclick="geoFindMe()">Show my location</button></p>
 <div id="out"></div>
-        if (!navigator.geolocation){
-            output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
-            return;
-        }
-<script>
-    function geofindme2(position) {
 
-        if (!navigator.geolocation) {
-            output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
-            return;
-        }
+@*************************************************************************************************@
 
-        function success2(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            alert('Your latitude is: ' + latitude);
-            alert('Your longitude is: ' + longitude);
-
-            output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
-
-            var img = new Image();
-            img.src = "http://maps.googleapis.com/maps/api/staticmap?center=" +
-                latitude +
-                "," +
-                longitude +
-                "&size=300x300&markers=color:blue&zoom=14";
-
-            output.append(img);
-        }
-    }
-
-</script>

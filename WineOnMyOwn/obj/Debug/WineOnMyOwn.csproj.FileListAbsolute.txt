@@ -121,8 +121,8 @@ C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.DependencyC
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.Web.xml
-C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csprojResolveAssemblyReference.cache
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csproj.CoreCompileInputs.cache
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csproj.CopyComplete
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.pdb
+C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csprojResolveAssemblyReference.cache

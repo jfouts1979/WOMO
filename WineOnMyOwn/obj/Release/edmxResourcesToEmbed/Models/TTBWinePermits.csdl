@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WOMOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="WOMOEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="INZipCodes" EntityType="WOMOModel.INZipCode" />
+    <EntitySet Name="TTBWinePermits" EntityType="WOMOModel.TTBWinePermit" />
+  </EntityContainer>
+  <EntityType Name="INZipCode">
+    <Key>
+      <PropertyRef Name="ZipCodeId" />
+    </Key>
+    <Property Name="ZIP_Code" Type="Double" />
+    <Property Name="ZipCodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="TTBWinePermit">
+    <Key>
+      <PropertyRef Name="WinePermitId" />
+    </Key>
+    <Property Name="PERMIT_NUMBER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="OWNER_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="OPERATING_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="STREET" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CITY" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="STATE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ZIP" Type="Double" />
+    <Property Name="ZIP4" Type="Double" />
+    <Property Name="COUNTY" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="FullAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Lat" Type="Double" />
+    <Property Name="Lng" Type="Double" />
+    <Property Name="WinePermitId" Type="Int32" Nullable="false" />
+    <Property Name="ZipCodeId" Type="Int32" />
+  </EntityType>
+</Schema>
