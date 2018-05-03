@@ -116,7 +116,7 @@ namespace WineOnMyOwn.Models
                         var distance = distance2PointsAsCrowFlies(lat, lng, latrad, lngrad);
 
                         //Needs to be established as a setting from the user
-                        var radius = 50;
+                        var radius = 30;
                         if (distance < radius)
                         {
                             permitRecordRadiusList.Add(permit); 

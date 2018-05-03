@@ -73,6 +73,8 @@
         }
 
         navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);
+
+
     }
 
     getLocation();
@@ -174,51 +176,30 @@
             });
         }
         DrawCircle(50);
+
+        setInterval(function() {
+            navigator.geolocation.getCurrentPosition(updateCenter);
+        }, 5000);
     }
 
-    //function geoFindMe() {
-                                //    //var output = document.getElementById("out");
-                                //    var output = $('#out');
+    function updateCenter(position) {
+        // The position getCurrentPosition passes, IS NOT a google.maps.LatLng object. First, we need to convert it:
+        var lati = position.coords.latitude;
+        var long = position.coords.longitude;
+        var mapCenter = new google.maps.LatLng({lat: lati, lng: long});
 
-                                //    if (!navigator.geolocation) {
-                                //        output.html("<p>Geolocation is not supported by your browser</p>");
-                                //        return;
-                                //    }
+        // Update stuff, instead of reinitializing
+        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        var marker = new google.maps.Marker({
+            position: {lat: lati, lng: long},
+            icon: im  
+        });
+        marker.setPosition({lat: lati, lng: long});
+        map.setCenter({lat: lati, lng: long});
+    }
 
-                                //    function success(position) {
-                                //        var latitude = position.coords.latitude;
-                                //        var longitude = position.coords.longitude;
-                                //        latitudeGlobal = latitude;
-                                //        longitudeGlobal = longitude;
-                                //        output.html('<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>');
-
-                                //        var img = new Image();
-                                //        img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + latitude + "," + longitude + "&size=400x400&markers=color:blue%7Clabel:S%7C" + latitude + "," + longitude + "&zoom=15";
-
-                                //        output.append(img);
-                                //    }
-
-                                //    function error() {
-                                //        //output.innerHTML = "Unable to retrieve your location";
-                                //        alert('Error here.');
-                                //    }
-
-                                //    //output.innerHTML = "<p>Locating…</p>";
-
-                                //    navigator.geolocation.getCurrentPosition(success, error);
-
-                                //}
-
-                                //geoFindMe();
-
-                                watchLocationOptions = {
-                                    enableHighAccuracy: true,
-                                    timeout: 5000,
-                                    maximumAge: 60000
-                                };
-
-                            var id = navigator.geolocation.watchPosition(getLocation, onGetLocationError, watchLocationOptions);
-
+//        img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + static map api key
+    
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">
