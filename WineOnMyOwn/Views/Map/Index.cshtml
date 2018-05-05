@@ -116,12 +116,16 @@
             cache: false,
 
             success: function (data) {
-                
+                var infowindow = new google.maps.InfoWindow();
                 jQuery.each(data,
                     function (index) {
                        //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
-                        var infowindow = new google.maps.InfoWindow();
+                        //******************************************************
+                        //************* Set vars I want back  ******************
+                        //******************************************************
+
+                        
                         var city = data[index].CITY;
                         var state = data[index].STATE;
                         var zip = data[index].ZIP;
