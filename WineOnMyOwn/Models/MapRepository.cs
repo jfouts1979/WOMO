@@ -102,10 +102,6 @@ namespace WineOnMyOwn.Models
                 //List<int> permitListInt = new List<int>();
                 List<TTBWinePermit> permitRecordRadiusList = new List<TTBWinePermit>();
 
-                //This needs to be updated to grab coordinates from user's phone/device
-                //var louisvilleLat = 38.328732;
-                //var louisvilleLng = -85.764771;
-
                 foreach (var permit in db.TTBWinePermits)
                 {
                     if ((permit.Lat != null) || (permit.Lng != null))

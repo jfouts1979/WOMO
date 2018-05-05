@@ -85,8 +85,7 @@
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'),
-            //setInterval("updateMarkers()", 60000), //refresh every minute
-            {
+        {
                 zoom: 8,
                 center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
                 mapTypeId: 'terrain'
@@ -103,37 +102,53 @@
         //******************************************************
         //************* Ajax Get Marker Radius *****************
         //******************************************************
+        var data = {
+            lat: latitudeGlobal,
+            lng: longitudeGlobal,
+        };
 
-        var data = { lat: latitudeGlobal, lng: longitudeGlobal }
         $.ajax({
             url: "/Map/GetRadiusMarkers",
             data: data,
             dataType: "json",
             type: "GET",
-            contentType: 'application/json; charset=utf-8', //define a contentType of your request
+            contentType: 'application/json; charset=utf-8', 
             cache: false,
 
-
             success: function (data) {
+                
                 jQuery.each(data,
                     function (index) {
-                        //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-                        //var image = "~/Content/grapesicon.jpg";*/
-                        var infowindow= new google.maps.InfoWindow({
-                                    content: data[index].OWNER_NAME
-                                });
-                            var latitude = data[index].Lat;
+                       //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+                        var infowindow = new google.maps.InfoWindow();
+                        var city = data[index].CITY;
+                        var state = data[index].STATE;
+                        var zip = data[index].ZIP;
+                        var winery = data[index].OWNER_NAME;
+                        var address = data[index].STREET;
+                        var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
-                        var latLng = new google.maps.LatLng(latitude, longitude);
-                        var marker = new google.maps.Marker({
-                                position: latLng,
-                            map: map,
-                            icon: "/Content/Picture2.png"
-                        });
+
+                var contentString = '<p><b>' + winery + '</b><br>'+
+                      address + '<br>'+
+                    city +', ' + state + '  ' + zip + '<br>'+
+                    '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a>';
+
+                    var latLng = new google.maps.LatLng(latitude, longitude);
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        icon: "/Content/Picture2.png"
                     });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.setContent(contentString);
+                        infowindow.open(map,marker);
+                    });
+                });
                 var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
                 var centralMarker = new google.maps.Marker({
-                    position: {lat: latitudeGlobal, lng: longitudeGlobal },
+                    position: { lat: latitudeGlobal, lng: longitudeGlobal },
                     map: map,
                     icon: im  
                 });
