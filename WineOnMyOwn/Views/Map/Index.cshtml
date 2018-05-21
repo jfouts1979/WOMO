@@ -48,6 +48,7 @@
     var map;
     var latitudeGlobal;
     var longitudeGlobal;
+    var watchId;
 
     function onGetLocationSuccess(position) {
         latitudeGlobal = position.coords.latitude;
@@ -71,8 +72,13 @@
             output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
             return;
         }
+        var optn = {
+            enableHighAccuracy: true,
+            timeout: Infinity,
+            maximumAge: 0
 
-        navigator.geolocation.getCurrentPosition(onGetLocationSuccess, onGetLocationError);
+        }
+        var watchId = navigator.geolocation.watchPosition(onGetLocationSuccess, onGetLocationError, optn);
 
 
     }
@@ -219,7 +225,7 @@
 
     options = {
         enableHighAccuracy: false,
-        timeout: 5000,
+        timeout: Infinity,
         maximumAge: 0
     };
 
