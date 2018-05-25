@@ -39,8 +39,6 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
-
-
     //***********************************************
     //************* Get Geolocation *****************
     //***********************************************
@@ -49,6 +47,12 @@
     var latitudeGlobal;
     var longitudeGlobal;
     var watchId;
+    var circle;
+    var ogmarker;
+    var initCenter;
+    var newLatLng;
+
+ 
 
     function onGetLocationSuccess(position) {
 
@@ -142,12 +146,12 @@
                             infowindow.open(map, marker);
                         });
                     });
-                var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
-                new google.maps.Marker({
-                    position: { lat: latitudeGlobal, lng: longitudeGlobal },
-                    map: map,
-                    icon: im
-                });
+
+                //new google.maps.Marker({
+                //    position: { lat: latitudeGlobal, lng: longitudeGlobal },
+                //    map: map,
+                //    icon: im
+                //});
             }
         });
 
@@ -156,47 +160,22 @@
 
     getLocation();
 
-    //***********************************************
-    //************* Initialize Map  *****************
-    //***********************************************
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'),
-            {
-                zoom: 9,
-                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
-                mapTypeId: 'terrain'
-
-            });
-
-    }
-
-    function updateCenter() {
-        var position = { lat: latitudeGlobal, lng: longitudeGlobal };
-        // Update stuff, instead of reinitializing
-        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
-        var marker = new google.maps.Marker({
-            position: position,
-            icon: im
-        });
-        marker.setPosition(position);
-        map.setCenter(position);
-
+    function drawCircle() {
 
         //***********************************************
         //************* Make Map Circle *****************
         //***********************************************
 
         // LatLng of center point of circle.
-        var center = position;
+        var center = newLatLng;
         var rad = 30;
         // Object of google maps polygon for redrawing the circle.
-        //var draw_circle = null;
+        circle = null;
+        //circle.setMap(null);
 
         // Convert to meters if in miles.
         rad *= 1600;
-
-        new google.maps.Circle({
+        circle = new google.maps.Circle({
             center: center,
             radius: rad,
             strokeColor: "#800080",
@@ -208,11 +187,44 @@
         });
     }
 
-    options = {
-        enableHighAccuracy: true,
-        timeout: Infinity,
-        maximumAge: 0
-    };
+
+    //***********************************************
+    //************* Initialize Map  *****************
+    //***********************************************
+
+    function initMap() {
+        var initCenter = { lat: latitudeGlobal, lng: longitudeGlobal };
+        map = new google.maps.Map(document.getElementById('map'),
+            {
+                zoom: 9,
+                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
+                mapTypeId: 'terrain'
+            });
+        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        ogmarker = new google.maps.Marker({
+            position: initCenter,
+            icon: im,
+            map: map
+        });
+        drawCircle();
+    }
+
+    function updateCenter() {
+        var newLatLng = { lat: latitudeGlobal, lng: longitudeGlobal };
+        // Update stuff, instead of reinitializing
+        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        //ogmarker.position = newLatLng;
+        ogmarker.setPosition(newLatLng);
+        map.setCenter(newLatLng);
+        circle.setCenter(newLatLng);
+
+        options = {
+            enableHighAccuracy: true,
+            timeout: Infinity,
+            maximumAge: 0
+        };
+
+    }
 
     function error(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
