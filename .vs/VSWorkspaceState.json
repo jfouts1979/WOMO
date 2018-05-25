@@ -4,12 +4,12 @@
     "\\WineOnMyOwn",
     "\\WineOnMyOwn\\Controllers",
     "\\WineOnMyOwn\\Models",
-    "\\WineOnMyOwn\\Scripts",
     "\\WineOnMyOwn\\Views",
     "\\WineOnMyOwn\\Views\\Home",
     "\\WineOnMyOwn\\Views\\Map",
-    "\\WineOnMyOwn\\Views\\TTBWinePermits"
+    "\\WineOnMyOwn\\Views\\TTBWinePermits",
+    "\\WOMO"
   ],
-  "SelectedNode": "\\WineOnMyOwn\\Views\\TTBWinePermits\\Index.cshtml",
+  "SelectedNode": "\\WineOnMyOwn.sln",
   "PreviewInSolutionExplorer": false
 }

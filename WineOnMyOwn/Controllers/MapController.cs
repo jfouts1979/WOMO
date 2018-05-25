@@ -13,6 +13,11 @@ namespace WineOnMyOwn.Controllers
             return View(new SampleViewModel());
         }
 
+        public ActionResult OldBeforeDone()
+        {
+            return View(new SampleViewModel());
+        }
+
         [HttpPost]
         public JsonResult GetAnswer(string question)
         {

@@ -51,10 +51,19 @@
     var watchId;
 
     function onGetLocationSuccess(position) {
+
+        if (latitudeGlobal === position.coords.latitude && longitudeGlobal === position.coords.longitude)
+            return;
+
         latitudeGlobal = position.coords.latitude;
         longitudeGlobal = position.coords.longitude;
-        initMap();
 
+        if (!map) {
+            initMap();
+        }
+
+        updateCenter(latitudeGlobal, longitudeGlobal);
+        getMarkersForMap();
     }
 
     function onGetLocationError() {
@@ -78,33 +87,11 @@
             maximumAge: 0
 
         }
-        var watchId = navigator.geolocation.watchPosition(onGetLocationSuccess, onGetLocationError, optn);
-
-
+        navigator.geolocation.watchPosition(onGetLocationSuccess, onGetLocationError, optn);
     }
 
-    getLocation();
 
-    //***********************************************
-    //************* Initialize Map  *****************
-    //***********************************************
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'),
-        {
-                zoom: 8,
-                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
-                mapTypeId: 'terrain'
-
-            });
-
-        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-        var icons = {
-            parking: {
-                icon: iconBase + 'parking_lot_maps.png'
-            }
-        }
-
+    function getMarkersForMap() {
         //******************************************************
         //************* Ajax Get Marker Radius *****************
         //******************************************************
@@ -118,20 +105,19 @@
             data: data,
             dataType: "json",
             type: "GET",
-            contentType: 'application/json; charset=utf-8', 
+            contentType: 'application/json; charset=utf-8',
             cache: false,
 
             success: function (data) {
                 var infowindow = new google.maps.InfoWindow();
                 jQuery.each(data,
                     function (index) {
-                       //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+                        //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
                         //******************************************************
                         //************* Set vars I want back  ******************
                         //******************************************************
 
-                        
                         var city = data[index].CITY;
                         var state = data[index].STATE;
                         var zip = data[index].ZIP;
@@ -140,91 +126,90 @@
                         var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
 
-                var contentString = '<p><b>' + winery + '</b><br>'+
-                      address + '<br>'+
-                    city +', ' + state + '  ' + zip + '<br>'+
-                    '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a>';
+                        var contentString = '<p><b>' + winery + '</b><br>' +
+                            address + '<br>' +
+                            city + ', ' + state + '  ' + zip + '<br>' +
+                            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>';
 
-                    var latLng = new google.maps.LatLng(latitude, longitude);
-                    var marker = new google.maps.Marker({
-                        position: latLng,
-                        map: map,
-                        icon: "/Content/Picture2.png"
+                        var latLng = new google.maps.LatLng(latitude, longitude);
+                        var marker = new google.maps.Marker({
+                            position: latLng,
+                            map: map,
+                            icon: "/Content/Picture2.png"
+                        });
+                        google.maps.event.addListener(marker, 'click', function () {
+                            infowindow.setContent(contentString);
+                            infowindow.open(map, marker);
+                        });
                     });
-                    google.maps.event.addListener(marker, 'click', function() {
-                        infowindow.setContent(contentString);
-                        infowindow.open(map,marker);
-                    });
-                });
                 var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
-                var centralMarker = new google.maps.Marker({
+                new google.maps.Marker({
                     position: { lat: latitudeGlobal, lng: longitudeGlobal },
                     map: map,
-                    icon: im  
+                    icon: im
                 });
             }
         });
 
         //*** End Of Ajax ***//
+    }
+
+    getLocation();
+
+    //***********************************************
+    //************* Initialize Map  *****************
+    //***********************************************
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'),
+            {
+                zoom: 9,
+                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
+                mapTypeId: 'terrain'
+
+            });
+
+    }
+
+    function updateCenter() {
+        var position = { lat: latitudeGlobal, lng: longitudeGlobal };
+        // Update stuff, instead of reinitializing
+        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        var marker = new google.maps.Marker({
+            position: position,
+            icon: im
+        });
+        marker.setPosition(position);
+        map.setCenter(position);
+
 
         //***********************************************
         //************* Make Map Circle *****************
         //***********************************************
 
-        // Radius of circle in miles.
-        var rad = 50;               
-
         // LatLng of center point of circle.
-        var center = { lat: latitudeGlobal, lng: longitudeGlobal }; 
-
+        var center = position;
+        var rad = 30;
         // Object of google maps polygon for redrawing the circle.
-        var draw_circle = null;                          
+        //var draw_circle = null;
 
-        function DrawCircle(rad) {
+        // Convert to meters if in miles.
+        rad *= 1600;
 
-            // Convert to meters if in miles.
-            rad *= 1600; 
-
-                            if (draw_circle != null) {
-                                draw_circle.setMap(null);
-                            }
-
-            draw_circle = new google.maps.Circle({
-                                center: center,
-                radius: rad,
-                strokeColor: "#800080",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: "#800080",
-                fillOpacity: 0.35,
-                map: map
-            });
-        }
-        DrawCircle(50);
-
-        //setInterval(function() {
-        //    navigator.geolocation.getCurrentPosition(updateCenter);
-        //}, 5000);
-    }
-
-    function updateCenter(position) {
-        // The position getCurrentPosition passes, IS NOT a google.maps.LatLng object. First, we need to convert it:
-        var lati = position.coords.latitude;
-        var long = position.coords.longitude;
-        var mapCenter = new google.maps.LatLng({lat: lati, lng: long});
-
-        // Update stuff, instead of reinitializing
-        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
-        var marker = new google.maps.Marker({
-            position: {lat: lati, lng: long},
-            icon: im  
+        new google.maps.Circle({
+            center: center,
+            radius: rad,
+            strokeColor: "#800080",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#800080",
+            fillOpacity: 0.35,
+            map: map
         });
-        marker.setPosition({lat: lati, lng: long});
-        map.setCenter({lat: lati, lng: long});
     }
 
     options = {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         timeout: Infinity,
         maximumAge: 0
     };
@@ -236,7 +221,7 @@
     //var id = navigator.geolocation.watchPosition(updateCenter, error, options);
 
 //        img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + static map api key
-    
+
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">

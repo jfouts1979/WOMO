@@ -247,6 +247,7 @@
     <Content Include="Content\Picture2.png" />
     <Content Include="Views\Map\Index.cshtml" />
     <None Include="Properties\PublishProfiles\WOMO - Web Deploy.pubxml" />
+    <Content Include="Views\Map\OldBeforeDone.cshtml" />
     <None Include="Views\Map\RadiusMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
