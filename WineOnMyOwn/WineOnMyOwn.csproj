@@ -246,6 +246,7 @@
     <Compile Include="Startup.cs" />
     <Content Include="Content\Picture2.png" />
     <Content Include="Views\Map\Index.cshtml" />
+    <Content Include="fonts\Chisel Mark.ttf" />
     <None Include="Properties\PublishProfiles\WOMO - Web Deploy.pubxml" />
     <Content Include="Views\Map\OldBeforeDone.cshtml" />
     <None Include="Views\Map\RadiusMap.cshtml" />

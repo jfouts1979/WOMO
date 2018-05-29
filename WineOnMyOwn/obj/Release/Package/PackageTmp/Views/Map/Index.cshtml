@@ -1,16 +1,41 @@
 ﻿@*<img src="~/Content/grapesicon.jpg" alt="grapesicon">;*@
+
+<!-- Latest compiled and minified CSS -->
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+
+
 <style>
     /* Always set the map height explicitly to define the size of the div
      * element that contains the map. */
     #map {
-        height: 400px;
-        width: 400px;
+        height: 420px;
+        width: 100%;
+        padding-top: 10px;
+        border: 10px solid indigo;
+        border-radius: 4px;
     }
 
+    /*#map {
+        height: 100%;
+        width: 100%;
+    }*/
+
     #out {
-        height: 400px;
-        width: 400px;
+        height: 100%;
+        width: 100%;
     }
+
+    /*$('<div id="mapcontainer">').css({
+    height: 250,
+    width: 'auto',
+    border: '10px solid #0b0'
+}).appendTo('article');*/
 
     /* Optional: Makes the sample page fill the window. */
     html, body {
@@ -20,9 +45,30 @@
         background-color: #ffffc9;
     }
 
+    .map-responsive {
+        overflow: hidden;
+        padding-bottom: 56.25%;
+        position: relative;
+        height: 0;
+    }
+
     p {
         margin: 0;
     }
+
+    .navbar-brand { color: lightgreen !important;
+                           font-family: 'Garamond' !important;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    a.navbar-brand {font-family: 'Garamond' !important}
+    .navbar-brand:visited { color: orange !important }
+    .navbar-default-color { color: gold !important }
+    .navbar-inverse { color : #FFFFFF !important }
+    .navbar-nav li {color: lightgreen !important }
+    .nav a {color: lightgreen !important }
+    
 </style>
 <br /><br /><br />
 
@@ -39,8 +85,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
-
-
+    
     //***********************************************
     //************* Get Geolocation *****************
     //***********************************************
@@ -49,6 +94,12 @@
     var latitudeGlobal;
     var longitudeGlobal;
     var watchId;
+    var circle;
+    var ogmarker;
+    var initCenter;
+    var newLatLng;
+
+
 
     function onGetLocationSuccess(position) {
 
@@ -142,12 +193,12 @@
                             infowindow.open(map, marker);
                         });
                     });
-                var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
-                new google.maps.Marker({
-                    position: { lat: latitudeGlobal, lng: longitudeGlobal },
-                    map: map,
-                    icon: im
-                });
+
+                //new google.maps.Marker({
+                //    position: { lat: latitudeGlobal, lng: longitudeGlobal },
+                //    map: map,
+                //    icon: im
+                //});
             }
         });
 
@@ -156,47 +207,22 @@
 
     getLocation();
 
-    //***********************************************
-    //************* Initialize Map  *****************
-    //***********************************************
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'),
-            {
-                zoom: 9,
-                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
-                mapTypeId: 'terrain'
-
-            });
-
-    }
-
-    function updateCenter() {
-        var position = { lat: latitudeGlobal, lng: longitudeGlobal };
-        // Update stuff, instead of reinitializing
-        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
-        var marker = google.maps.Marker({
-            position: position,
-            icon: im
-        });
-        marker.setPosition(position);
-        map.setCenter(position);
-
+    function drawCircle() {
 
         //***********************************************
         //************* Make Map Circle *****************
         //***********************************************
 
         // LatLng of center point of circle.
-        var center = position;
+        var center = newLatLng;
         var rad = 30;
         // Object of google maps polygon for redrawing the circle.
-        //var draw_circle = null;
+        circle = null;
+        //circle.setMap(null);
 
         // Convert to meters if in miles.
         rad *= 1600;
-
-        new google.maps.Circle({
+        circle = new google.maps.Circle({
             center: center,
             radius: rad,
             strokeColor: "#800080",
@@ -208,11 +234,53 @@
         });
     }
 
-    options = {
-        enableHighAccuracy: true,
-        timeout: Infinity,
-        maximumAge: 0
-    };
+    //function resize() {
+    //    map.setCenter(center);
+    //    map.fitBounds(path_bounds);
+    //}
+
+    //***********************************************
+    //************* Initialize Map  *****************
+    //***********************************************
+
+    function initMap() {
+        var initCenter = { lat: latitudeGlobal, lng: longitudeGlobal };
+        map = new google.maps.Map(document.getElementById('map'),
+            {
+                zoom: 9,
+                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
+                mapTypeId: 'terrain',
+                disableDefaultUI: true
+            });
+        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        ogmarker = new google.maps.Marker({
+            position: initCenter,
+            icon: im,
+            map: map
+        });
+        drawCircle();
+
+        ////Resize Function
+        //google.maps.event.addDomListener(window, "resize", function() {
+        //    var center = map.getCenter();
+        //    google.maps.event.trigger(map, "resize");
+        //    map.setCenter(center);
+        //});
+    }
+
+    function updateCenter() {
+        var newLatLng = { lat: latitudeGlobal, lng: longitudeGlobal };
+        // Update stuff, instead of reinitializing
+        ogmarker.setPosition(newLatLng);
+        map.setCenter(newLatLng);
+        circle.setCenter(newLatLng);
+
+        options = {
+            enableHighAccuracy: true,
+            timeout: Infinity,
+            maximumAge: 0
+        };
+    }
 
     function error(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
@@ -226,8 +294,6 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">
 </script>
-
-<div id="out"></div>
 
 @*************************************************************************************************@
 

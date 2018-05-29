@@ -95,7 +95,7 @@ namespace WineOnMyOwn.Models
         //*************************************************************
         //*** Returns A List of TTB Permits Within Specified Radius ***
         //*************************************************************
-        public static List<TTBWinePermit> GetTTBWinePermits(double latrad, double lngrad)
+        public static List<TTBWinePermit> GetTTBWinePermits(double latrad, double lngrad, int radius)
         {
             using (WOMOEntities db = new WOMOEntities())
             {
@@ -112,7 +112,7 @@ namespace WineOnMyOwn.Models
                         var distance = distance2PointsAsCrowFlies(lat, lng, latrad, lngrad);
 
                         //Needs to be established as a setting from the user
-                        var radius = 30;
+                        //var radius = 30;
                         if (distance < radius)
                         {
                             permitRecordRadiusList.Add(permit); 
