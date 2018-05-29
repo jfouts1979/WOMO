@@ -1,13 +1,14 @@
-C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\csc.exe
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.CodeAnalysis.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\System.IO.Compression.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\VBCSCompiler.exe
+C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\ApplicationInsights.config
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\WineOnMyOwn.dll.config
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\WineOnMyOwn.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\WineOnMyOwn.pdb
+C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\csc.exe
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\csc.exe.config
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\csc.rsp
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\csi.exe
@@ -17,7 +18,6 @@ C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.Build.T
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.VisualBasic.Core.targets
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\roslyn\Microsoft.Win32.Primitives.dll
@@ -121,8 +121,8 @@ C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.DependencyC
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\bin\Microsoft.AI.Web.xml
-C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csprojResolveAssemblyReference.cache
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csproj.CoreCompileInputs.cache
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csproj.CopyComplete
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.dll
 C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.pdb
+C:\Users\Fouts\source\repos\WineOnMyOwn\WineOnMyOwn\obj\Debug\WineOnMyOwn.csprojResolveAssemblyReference.cache

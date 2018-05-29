@@ -193,7 +193,7 @@
             timeout: Infinity,
             maximumAge: 0
 
-        }
+        };
         navigator.geolocation.watchPosition(onGetLocationSuccess, onGetLocationError, optn);
     }
 
@@ -259,12 +259,51 @@
 
     getLocation();
 
-    $("#initradius").blur(function () {
-        
+    //May come in handy later...
+    //google.maps.event.addListener(iMap.map, 'zoom_changed', function () {
+    //    for (var i = 0; i < iMap.circle.length; i++) {
+    //        var p = Math.pow(2, (21 - iMap.map.getZoom()));
+    //        iMap.circle[i].setRadius(p * 1128.497220 * 0.0027);
+    //    }
+
+    //    menu.hide();
+    //});
+
+    $("#initradius").blur(function() {
+
         initRadius = $('#initradius').val();
         alert('blur event triggered:' + initRadius);
         initMap();
+        specialZoom2();
+
     });
+
+    //function specialZoom() {
+    //    //var bounds = circle.getBounds();
+    //    ////Set zoom to max possible
+    //    //map.setZoom(19);
+    //    alert(circle.getBounds());
+    //    google.maps.map.fitBounds(circle.getBounds());
+    //    map.panToBounds(bounds);
+    //}
+
+    
+
+    //15 = 1/2, 14 = 1, 13 = 2, 12 = 4, 11 = 8, 10 = 16
+//-1 = 1/2, 0 = 1, 1 = 2, 2 = 4, 3 = 8, 4 = 16
+//2^(14-zoom) = radius
+//ln(x^y) = y*ln(x)
+//ln(2^(14-zoom)) = ln(radius) = (14-zoom) * ln(2)
+//ln(radius)/ln(2) -14 = -zoom
+//zoom = 14 - ln(radius)/ln(2)
+//throw  round on there to make sure we get an integer
+//and don't make the g-maps API angry
+//radiusToZoom:
+    var sZ;
+    function specialZoom2() {
+        map.setZoom(Math.round(14 - Math.log(initRadius) / Math.LN2)-1);
+    }
+
 
     function drawCircle() {
 
@@ -275,7 +314,7 @@
         // LatLng of center point of circle.
         var center = newLatLng;
         var rad = initRadius;
-        alert('rad is: ' + rad);
+        //alert('rad is: ' + rad);
         // Object of google maps polygon for redrawing the circle.
         circle = null;
         //circle.setMap(null);
@@ -315,7 +354,7 @@
             icon: im,
             map: map
         });
-        alert('I\'m in initMap' + initRadius);
+
         drawCircle(initRadius);
 
         ////Resize Function
@@ -324,8 +363,17 @@
             var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
             map.setCenter(center);
+            
         });
+
+        //google.maps.event.addListener(map, 'bounds_changed', function() {
+        //    var bounds = circle.getBounds();
+        //    map.fitBounds(bounds);
+        //    map.panToBounds(bounds);
+        //});
     }
+
+
 
     function updateCenter() {
         var newLatLng = { lat: latitudeGlobal, lng: longitudeGlobal };
