@@ -31,11 +31,6 @@
         border-radius: 4px;
     }
 
-    #out {
-        height: 100%;
-        width: 100%;
-    }
-
     /* Optional: Makes the sample page fill the window. */
     html, body {
         height: 100%;
@@ -60,6 +55,18 @@
         font-family: 'Garamond' !important;
         font-weight: bold;
         font-size: 1.5em;
+    }
+
+    #map .iw-container  .iw-title {
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-weight: bold;
+        font-size: 22px;
+        font-weight: 400;
+        padding: 10px;
+        background-color: #48b5e9 !important;
+        color: white;
+        margin: 1px;
+        border-radius: 2px 2px 0 0; /* In accordance with the rounding of the default infowindow corners. */
     }
 
     a.navbar-brand {
@@ -92,15 +99,16 @@
     //************** Map Marker Div *****************
     //***********************************************@
 
-<div id="map"></div>
+<div id="map" class="card"></div>
 <div>
-    Filters and Buttons and Options Oh My
-    <button onclick="initMap()">
-        Re-center Me!
-    </button>
     <div class="form-group">
         <label for="initradius">Enter Radius:</label>
         <input type="number" class="form-control" id="initradius">
+    </div>
+    <div class="form-group">
+        <button onclick="initMap()">
+            Re-center Me!
+        </button>
     </div>
 </div>
 
@@ -234,16 +242,23 @@
                         var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
 
-                        var contentString = '<p><b>' + winery + '</b><br>' +
-                            address + '<br>' +
-                            city + ', ' + state + '  ' + zip + '<br>' +
-                            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>';
+                        var contentString =
+                            '<div id="iw-container"><div id="iw-title">' +
+                            winery + '</div><p>' +
+                            '<br>' +
+                            address +
+                            '<br>' +
+                            city + ', ' + state + '  ' + zip +
+                            '<br>' +
+                            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
+                            '</div>';
 
                         var latLng = new google.maps.LatLng(latitude, longitude);
                         var marker = new google.maps.Marker({
                             position: latLng,
                             map: map,
-                            icon: "/Content/Picture2.png"
+                            icon: "/Content/Picture2.png",
+                            title: winery
                         });
                         google.maps.event.addListener(marker, 'click', function () {
                             infowindow.setContent(contentString);
@@ -272,24 +287,12 @@
     $("#initradius").blur(function() {
 
         initRadius = $('#initradius').val();
-        alert('blur event triggered:' + initRadius);
         initMap();
         specialZoom2();
 
     });
 
-    //function specialZoom() {
-    //    //var bounds = circle.getBounds();
-    //    ////Set zoom to max possible
-    //    //map.setZoom(19);
-    //    alert(circle.getBounds());
-    //    google.maps.map.fitBounds(circle.getBounds());
-    //    map.panToBounds(bounds);
-    //}
-
-    
-
-    //15 = 1/2, 14 = 1, 13 = 2, 12 = 4, 11 = 8, 10 = 16
+//15 = 1/2, 14 = 1, 13 = 2, 12 = 4, 11 = 8, 10 = 16
 //-1 = 1/2, 0 = 1, 1 = 2, 2 = 4, 3 = 8, 4 = 16
 //2^(14-zoom) = radius
 //ln(x^y) = y*ln(x)
@@ -314,7 +317,6 @@
         // LatLng of center point of circle.
         var center = newLatLng;
         var rad = initRadius;
-        //alert('rad is: ' + rad);
         // Object of google maps polygon for redrawing the circle.
         circle = null;
         //circle.setMap(null);
@@ -366,11 +368,6 @@
             
         });
 
-        //google.maps.event.addListener(map, 'bounds_changed', function() {
-        //    var bounds = circle.getBounds();
-        //    map.fitBounds(bounds);
-        //    map.panToBounds(bounds);
-        //});
     }
 
 
@@ -402,5 +399,5 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">
 </script>
 
-@*************************************************************************************************@
+@********************************************************************************************@
 
