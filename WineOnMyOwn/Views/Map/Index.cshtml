@@ -138,6 +138,13 @@
         background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
         background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
     }
+
+    #panorama {
+        width: 25%;
+        height: 200px;
+    }
+
+
 </style>
 <br /><br /><br />
 
@@ -230,7 +237,8 @@
     var newLatLng;
     var initRadius;
     var infoWindow;
-    
+    var sv;
+    var panorama;
 
     function onGetLocationSuccess(position) {
 
@@ -273,11 +281,16 @@
         navigator.geolocation.watchPosition(onGetLocationSuccess, onGetLocationError, optn);
     }
 
+    //***********************************************
+    //************* Get Markers For Map *************
+    //***********************************************
 
     function getMarkersForMap() {
+
         //******************************************************
         //************* Ajax Get Marker Radius *****************
         //******************************************************
+
         var data = {
             lat: latitudeGlobal,
             lng: longitudeGlobal,
@@ -285,6 +298,7 @@
         };
 
         infoWindow = new google.maps.InfoWindow({});
+        sv = new google.maps.StreetViewService();
 
         $.ajax({
             url: "/Map/GetRadiusMarkers",
@@ -311,6 +325,28 @@
                         var address = data[index].STREET;
                         var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
+                        var wineryLatLng = new google.maps.LatLng(data[index].Lat, data[index].Lng);
+                        
+                        //panorama = new google.maps.StreetViewPanorama(document.getElementById('panorama'));
+                        sv.getPanorama({ location: wineryLatLng, radius: 50}, processSVData);
+
+                        function processSVData(data, status) {
+
+                            if (status === google.maps.StreetViewStatus.OK) {
+                                console.log('creating panorama');
+                                //panorama = new google.maps.StreetViewPanorama(document.querySelector("#panorama"));
+                                panorama = new google.maps.StreetViewPanorama(document.getElementById('panorama'));
+                                panorama.setPosition(data.location.wineryLatLng);
+                                panorama.setPov(({
+                                    heading: 265,
+                                    pitch: 0
+                                }));
+                                panorama.setEnableCloseButton(false);
+                                panorama.setVisible(true);
+                            } else {
+                                console.error('Street View data not found for this location.');
+                            }
+                        }
 
                         var contentString =
                             '<div id="iw-container">' +
@@ -323,6 +359,7 @@
                                        address +
                                        '<br>' +
                                        city + ', ' + state + '  ' + zip +
+                                       '<div id="panorama"></div>' +
                                        '<br>' +
                                        '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
                                    '</div>' +
@@ -333,18 +370,6 @@
 
 
                         //// InfoWindow content
-                        //var content = '<div id="iw-container">' +
-                        //    '<div class="iw-title">Porcelain Factory of Vista Alegre</div>' +
-                        //    '<div class="iw-content">' +
-                        //    '<div class="iw-subTitle">History</div>' +
-                        //    '<img src="http://maps.marnoto.com/en/5wayscustomizeinfowindow/images/vistalegre.jpg" alt="Porcelain Factory of Vista Alegre" height="115" width="83">' +
-                        //    '<p>Founded in 1824, the Porcelain Factory of Vista Alegre was the first industrial unit dedicated to porcelain production in Portugal. For the foundation and success of this risky industrial development was crucial the spirit of persistence of its founder, José Ferreira Pinto Basto. Leading figure in Portuguese society of the nineteenth century farm owner, daring dealer, wisely incorporated the liberal ideas of the century, having become "the first example of free enterprise" in Portugal.</p>' +
-                        //    '<div class="iw-subTitle">Contacts</div>' +
-                        //    '<p>VISTA ALEGRE ATLANTIS, SA<br>3830-292 Ílhavo - Portugal<br>' +
-                        //    '<br>Phone. +351 234 320 600<br>e-mail: geral@vaa.pt<br>www: www.myvistaalegre.com</p>' +
-                        //    '</div>' +
-                        //    '<div class="iw-bottom-gradient"></div>' +
-                        //    '</div>';
 
                         var latLng = new google.maps.LatLng(latitude, longitude);
                         var marker = new google.maps.Marker({
@@ -520,6 +545,8 @@
             
         });
 
+
+
     }
 
 
@@ -537,6 +564,8 @@
             maximumAge: 0
         };
     }
+
+
 
     function error(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
