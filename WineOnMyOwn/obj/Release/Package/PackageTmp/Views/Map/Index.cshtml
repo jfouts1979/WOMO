@@ -1,18 +1,28 @@
-﻿@*<img src="~/Content/grapesicon.jpg" alt="grapesicon">;*@
-
-<!-- Latest compiled and minified CSS -->
-@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+﻿<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
 <!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/css/mdb.min.css" rel="stylesheet">
+
+
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/js/mdb.min.js"></script>
 
 
 <style>
     /* Always set the map height explicitly to define the size of the div
-     * element that contains the map. */
+         * element that contains the map. */
     #map {
         height: 420px;
         width: 100%;
@@ -20,22 +30,6 @@
         border: 10px solid indigo;
         border-radius: 4px;
     }
-
-    /*#map {
-        height: 100%;
-        width: 100%;
-    }*/
-
-    #out {
-        height: 100%;
-        width: 100%;
-    }
-
-    /*$('<div id="mapcontainer">').css({
-    height: 250,
-    width: 'auto',
-    border: '10px solid #0b0'
-}).appendTo('article');*/
 
     /* Optional: Makes the sample page fill the window. */
     html, body {
@@ -56,19 +50,48 @@
         margin: 0;
     }
 
-    .navbar-brand { color: lightgreen !important;
-                           font-family: 'Garamond' !important;
+    .navbar-brand {
+        color: lightgreen !important;
+        font-family: 'Garamond' !important;
         font-weight: bold;
         font-size: 1.5em;
     }
 
-    a.navbar-brand {font-family: 'Garamond' !important}
-    .navbar-brand:visited { color: orange !important }
-    .navbar-default-color { color: gold !important }
-    .navbar-inverse { color : #FFFFFF !important }
-    .navbar-nav li {color: lightgreen !important }
-    .nav a {color: lightgreen !important }
-    
+    #map .iw-container  .iw-title {
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-weight: bold;
+        font-size: 22px;
+        font-weight: 400;
+        padding: 10px;
+        background-color: #48b5e9 !important;
+        color: white;
+        margin: 1px;
+        border-radius: 2px 2px 0 0; /* In accordance with the rounding of the default infowindow corners. */
+    }
+
+    a.navbar-brand {
+        font-family: 'Garamond' !important
+    }
+
+    .navbar-brand:visited {
+        color: orange !important
+    }
+
+    .navbar-default-color {
+        color: gold !important
+    }
+
+    .navbar-inverse {
+        color: #FFFFFF !important
+    }
+
+    .navbar-nav li {
+        color: lightgreen !important
+    }
+
+    .nav a {
+        color: lightgreen !important
+    }
 </style>
 <br /><br /><br />
 
@@ -76,7 +99,48 @@
     //************** Map Marker Div *****************
     //***********************************************@
 
-<div id="map"></div>
+<div id="map" class="card"></div>
+<div>
+    <div class="form-group">
+        <label for="initradius">Enter Radius:</label>
+        <input type="number" class="form-control" id="initradius">
+    </div>
+    <div class="form-group">
+        <button onclick="initMap()">
+            Re-center Me!
+        </button>
+    </div>
+</div>
+
+@*<!--Grid row-->
+    <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-6">
+
+            <!--Card-->
+            <div class="card card-cascade narrower">
+
+                <!--Card image-->
+                <div class="view gradient-card-header blue-gradient">
+                    <h5 class="mb-0">Regular map</h5>
+                </div>
+                <!--/Card image-->
+                <!--Card content-->
+                <div class="card-body text-center">
+
+                    <!--Google map-->
+                    <div id="map" class="z-depth-1" style="height: 420px"></div>
+
+                </div>
+                <!--/.Card content-->
+
+            </div>
+            <!--/.Card-->
+
+        </div>
+        <!--Grid column-->
+    </div>*@
 
 @*//***********************************************
     //************** Initializations ****************
@@ -85,7 +149,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
-    
+
     //***********************************************
     //************* Get Geolocation *****************
     //***********************************************
@@ -98,8 +162,7 @@
     var ogmarker;
     var initCenter;
     var newLatLng;
-
-
+    var initRadius;
 
     function onGetLocationSuccess(position) {
 
@@ -110,6 +173,7 @@
         longitudeGlobal = position.coords.longitude;
 
         if (!map) {
+            initRadius = 30;
             initMap();
         }
 
@@ -137,7 +201,7 @@
             timeout: Infinity,
             maximumAge: 0
 
-        }
+        };
         navigator.geolocation.watchPosition(onGetLocationSuccess, onGetLocationError, optn);
     }
 
@@ -149,6 +213,7 @@
         var data = {
             lat: latitudeGlobal,
             lng: longitudeGlobal,
+            radius: initRadius
         };
 
         $.ajax({
@@ -177,16 +242,23 @@
                         var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
 
-                        var contentString = '<p><b>' + winery + '</b><br>' +
-                            address + '<br>' +
-                            city + ', ' + state + '  ' + zip + '<br>' +
-                            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>';
+                        var contentString =
+                            '<div id="iw-container"><div id="iw-title">' +
+                            winery + '</div><p>' +
+                            '<br>' +
+                            address +
+                            '<br>' +
+                            city + ', ' + state + '  ' + zip +
+                            '<br>' +
+                            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
+                            '</div>';
 
                         var latLng = new google.maps.LatLng(latitude, longitude);
                         var marker = new google.maps.Marker({
                             position: latLng,
                             map: map,
-                            icon: "/Content/Picture2.png"
+                            icon: "/Content/Picture2.png",
+                            title: winery
                         });
                         google.maps.event.addListener(marker, 'click', function () {
                             infowindow.setContent(contentString);
@@ -194,11 +266,6 @@
                         });
                     });
 
-                //new google.maps.Marker({
-                //    position: { lat: latitudeGlobal, lng: longitudeGlobal },
-                //    map: map,
-                //    icon: im
-                //});
             }
         });
 
@@ -206,6 +273,50 @@
     }
 
     getLocation();
+
+    //May come in handy later...
+    //google.maps.event.addListener(iMap.map, 'zoom_changed', function () {
+    //    for (var i = 0; i < iMap.circle.length; i++) {
+    //        var p = Math.pow(2, (21 - iMap.map.getZoom()));
+    //        iMap.circle[i].setRadius(p * 1128.497220 * 0.0027);
+    //    }
+
+    //    menu.hide();
+    //});
+
+    $("#initradius").blur(function() {
+
+        initRadius = $('#initradius').val();
+        initMap();
+        specialZoom2();
+
+    });
+
+    $('#initradius').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            initRadius = $('#initradius').val();
+            initMap();
+            specialZoom2();
+        }
+    });   
+
+//15 = 1/2, 14 = 1, 13 = 2, 12 = 4, 11 = 8, 10 = 16
+//-1 = 1/2, 0 = 1, 1 = 2, 2 = 4, 3 = 8, 4 = 16
+//2^(14-zoom) = radius
+//ln(x^y) = y*ln(x)
+//ln(2^(14-zoom)) = ln(radius) = (14-zoom) * ln(2)
+//ln(radius)/ln(2) -14 = -zoom
+//zoom = 14 - ln(radius)/ln(2)
+//throw  round on there to make sure we get an integer
+//and don't make the g-maps API angry
+//radiusToZoom:
+
+    function specialZoom2() {
+        map.setZoom(Math.round(14 - Math.log(initRadius) / Math.LN2)-1);
+    }
+
 
     function drawCircle() {
 
@@ -215,7 +326,7 @@
 
         // LatLng of center point of circle.
         var center = newLatLng;
-        var rad = 30;
+        var rad = initRadius;
         // Object of google maps polygon for redrawing the circle.
         circle = null;
         //circle.setMap(null);
@@ -234,14 +345,11 @@
         });
     }
 
-    //function resize() {
-    //    map.setCenter(center);
-    //    map.fitBounds(path_bounds);
-    //}
 
     //***********************************************
     //************* Initialize Map  *****************
     //***********************************************
+
 
     function initMap() {
         var initCenter = { lat: latitudeGlobal, lng: longitudeGlobal };
@@ -258,15 +366,21 @@
             icon: im,
             map: map
         });
-        drawCircle();
+
+        drawCircle(initRadius);
 
         ////Resize Function
-        //google.maps.event.addDomListener(window, "resize", function() {
-        //    var center = map.getCenter();
-        //    google.maps.event.trigger(map, "resize");
-        //    map.setCenter(center);
-        //});
+
+        google.maps.event.addDomListener(window, "resize", function () {
+            var center = map.getCenter();
+            google.maps.event.trigger(map, "resize");
+            map.setCenter(center);
+            
+        });
+
     }
+
+
 
     function updateCenter() {
         var newLatLng = { lat: latitudeGlobal, lng: longitudeGlobal };
@@ -295,5 +409,5 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">
 </script>
 
-@*************************************************************************************************@
+@********************************************************************************************@
 
