@@ -236,9 +236,10 @@
     var initCenter;
     var newLatLng;
     var initRadius;
-    var infoWindow;
+    var infowindow;
     var sv;
     var panorama;
+    var wineryLatLng;
 
     function onGetLocationSuccess(position) {
 
@@ -297,8 +298,8 @@
             radius: initRadius
         };
 
-        infoWindow = new google.maps.InfoWindow({});
-        sv = new google.maps.StreetViewService();
+        infowindow = new google.maps.InfoWindow({});
+        
 
         $.ajax({
             url: "/Map/GetRadiusMarkers",
@@ -309,7 +310,7 @@
             cache: false,
 
             success: function (data) {
-                var infowindow = new google.maps.InfoWindow();
+                //var infowindow = new google.maps.InfoWindow();
                 jQuery.each(data,
                     function (index) {
                         //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
@@ -325,18 +326,16 @@
                         var address = data[index].STREET;
                         var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
-                        var wineryLatLng = new google.maps.LatLng(data[index].Lat, data[index].Lng);
+                        wineryLatLng = ({lat: latitude, lng: longitude});
                         
-                        //panorama = new google.maps.StreetViewPanorama(document.getElementById('panorama'));
-                        sv.getPanorama({ location: wineryLatLng, radius: 50}, processSVData);
+                        sv.getPanorama({ location: wineryLatLng, radius: 100}, processSVData);
 
-                        function processSVData(data, status) {
+                        function processSVData(wineryLatLng, status) {
 
                             if (status === google.maps.StreetViewStatus.OK) {
                                 console.log('creating panorama');
-                                //panorama = new google.maps.StreetViewPanorama(document.querySelector("#panorama"));
-                                panorama = new google.maps.StreetViewPanorama(document.getElementById('panorama'));
-                                panorama.setPosition(data.location.wineryLatLng);
+                                panorama = new google.maps.StreetViewPanorama(document.querySelector("#panorama"));
+                                panorama.setPosition(wineryLatLng);
                                 panorama.setPov(({
                                     heading: 265,
                                     pitch: 0
@@ -351,22 +350,22 @@
                         var contentString =
                             '<div id="iw-container">' +
                                 '<div class="iw-title">' +
-                                      winery +
+                                winery +
                                 '</div>' +
                                 '<p>' +
-                                   '<br>' +
-                                   '<div class="iw-content">' +
-                                       address +
-                                       '<br>' +
-                                       city + ', ' + state + '  ' + zip +
-                                       '<div id="panorama"></div>' +
-                                       '<br>' +
-                                       '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
-                                   '</div>' +
-                                 '</p>' +
-                                 '<div class="iw-bottom-gradient">' +
-                                 '</div>' +
-                            '</div>';
+                                '<br>' +
+                                '<div class="iw-content">' +
+                                address +
+                                '<br>' +
+                                city + ', ' + state + '  ' + zip +
+                                '<div id="panorama"></div>' +
+                                '<br>' +
+                                '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
+                                '</div>' +
+                                '</p>' +
+                                '<div class="iw-bottom-gradient">' +
+                                '</div>' +
+                                '</div>';
 
 
                         //// InfoWindow content
@@ -520,6 +519,8 @@
 
     function initMap() {
         var initCenter = { lat: latitudeGlobal, lng: longitudeGlobal };
+        sv = new google.maps.StreetViewService();
+        wineryLatLng = new google.maps.LatLng;
         map = new google.maps.Map(document.getElementById('map'),
             {
                 zoom: 9,
@@ -587,48 +588,49 @@
 */
 
     //function initialize() {
-        //var mapOptions = {
-        //    center: center,
-        //    zoom: 16,
-        //    mapTypeId: google.maps.MapTypeId.ROADMAP
-        //};
+    //var mapOptions = {
+    //    center: center,
+    //    zoom: 16,
+    //    mapTypeId: google.maps.MapTypeId.ROADMAP
+    //};
 
-        //var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    //var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
 
 
-        //// A new Info Window is created and set content
-        //var infowindow = new google.maps.InfoWindow({
-        //    content: content,
+    //// A new Info Window is created and set content
+    //var infowindow = new google.maps.InfoWindow({
+    //    content: content,
 
-        //    // Assign a maximum value for the width of the infowindow allows
-        //    // greater control over the various content elements
-        //    maxWidth: 350
-        //});
+    //    // Assign a maximum value for the width of the infowindow allows
+    //    // greater control over the various content elements
+    //    maxWidth: 350
+    //});
 
-        //// marker options
-        //var marker = new google.maps.Marker({
-        //    position: factory,
-        //    map: map,
-        //    title: "Porcelain Factory of Vista Alegre"
-        //});
+    //// marker options
+    //var marker = new google.maps.Marker({
+    //    position: factory,
+    //    map: map,
+    //    title: "Porcelain Factory of Vista Alegre"
+    //});
 
-        // This event expects a click on a marker
-        // When this event is fired the Info Window is opened.
-        //google.maps.event.addListener(marker, 'click', function () {
-        //    infowindow.open(map, marker);
-        //});
+    // This event expects a click on a marker
+    // When this event is fired the Info Window is opened.
+    //google.maps.event.addListener(marker, 'click', function () {
+    //    infowindow.open(map, marker);
+    //});
 
-        //// Event that closes the Info Window with a click on the map
-        //google.maps.event.addListener(map, 'click', function () {
-        //    infowindow.close();
-        //});
+    //// Event that closes the Info Window with a click on the map
+    //google.maps.event.addListener(map, 'click', function () {
+    //    infowindow.close();
+    //});
     //}
     //google.maps.event.addDomListener(window, 'load', initialize);
 
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">
+
 </script>
 
 @********************************************************************************************@
