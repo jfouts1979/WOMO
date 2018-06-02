@@ -1,0 +1,436 @@
+﻿@using WineOnMyOwn.Models
+@model IEnumerable<WineOnMyOwn.Models.TTBWinePermit>
+
+@{
+    ViewBag.Title = "Index";
+}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+<script type="text/javascript" src="~/Scripts/tablesorter-master/js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="~/Scripts/tablesorter-master/js/jquery.tablesorter.widgets.js"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/tablesorter-master/addons/pager/jquery.tablesorter.pager.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/mapfunctions.js")"></script>
+
+<script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxCMbyRjM4ScTIIaZM3uX6Jb9FPicOEMA&callback=initialize"></script>
+<script type="text/javascript" src="~/Scripts/tablesorter-master/addons/pager/jquery.tablesorter.pager.js"></script>
+
+
+<link href="@Url.Content("~/Scripts/tablesorter-master/css/high-specificity/theme.blue.specific.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Scripts/tablesorter-master/css/extra.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Scripts/tablesorter-master/addons/pager/jquery.tablesorter.pager.css")" rel="stylesheet" type="text/css" />
+
+<div id="mapcanvas" style="float:left;width:70%;height:100%;"></div>
+
+@*<script>
+    var directionDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    var map;*@
+
+
+@*//function initialize() {
+        //    directionsDisplay = new google.maps.DirectionsRenderer();
+        //    var louisville = new google.maps.LatLng(38.2527, -85.7585);
+        //    var myOptions = {
+        //        zoom: 12,
+        //        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        //        center: louisville
+        //    }
+
+        //    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        //    directionsDisplay.setMap(map);
+        //}
+
+        function calcRoute() {
+            var start = document.getElementById("start").value;
+            var end = document.getElementById("end").value;
+            var distanceInput = document.getElementById("distance");
+
+            var request = {
+                origin: start,
+                destination: end,
+                travelMode: window.google.maps.DirectionsTravelMode.DRIVING
+            };
+
+            directionsService.route(request, function (response, status) {
+                if (status == window.google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                    distanceInput.value = response.routes[0].legs[0].distance.value / 1000 * 0.62137119;
+                }
+            });
+        }
+
+    </script>*@
+
+
+@*<body onload="initialize();">*@
+@*<div>
+
+        <br />
+        <br />
+        <br />
+
+        <p>
+            <label for="start">Start: </label>
+            <input type="text" name="start" id="start" />
+
+            <label for="end">End: </label>
+            <input type="text" name="end" id="end" />
+
+            <input type="submit" value="Calculate Route" onclick="calcRoute()" />
+        </p>
+        <p>
+            <label for="distance">Distance (mi): </label>
+            <input type="text" name="distance" id="distance" />
+        </p>
+
+        <div id="map" style="width:400px;height:400px;background:yellow"></div>
+
+        <script>
+                function myMap() {
+                    var mapOptions = {
+                        center: new google.maps.LatLng(38.2527, -85.7585),
+                        zoom: 10,
+                        mapTypeId: google.maps.MapTypeId.HYBRID
+                    }
+                    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                }
+            </script>
+    </div>*@
+
+@*<div id="map-canvas" style="float:left;width:70%;height:100%;"></div>*@
+@*<div id="control_panel" style="float:right;width:30%;text-align:left;padding-top:20px">
+     <div style="margin:20px;border-width:2px;">
+     Start:
+     <select id="start">
+         <option value="Colombo, Western Province">Colombo</option>
+    </select>*@
+
+@*Waypoints:
+
+    (Check for multiple selection)
+    <input type="checkbox" name="city[]" class="waypoints" value="Kalutara, Western Province">Kaluthata
+    <input type="checkbox" name="city[]" class="waypoints" value="Negombo, Western Province">Negombo
+    <input type="checkbox" name="city[]" class="waypoints" value="Ratnapura, Sabaragamuwa Province">Ratnapura
+    <input type="checkbox" name="city[]" class="waypoints" value="Galle, Southern Province">Galle
+    <input type="checkbox" name="city[]" class="waypoints" value="Matara, Southern Province">Matara
+    <input type="checkbox" name="city[]" class="waypoints" value="Batticaloa, Eastern Province">Batticaloa
+    <input type="checkbox" name="city[]" class="waypoints" value="Trincomalee, Eastern Province">Trincomalee
+    <input type="checkbox" name="city[]" class="waypoints" value="Kandy, Central Province">Kandy*@
+
+@*End:
+    <select id="end">
+        <option value="Anuradhapura, North Central Province">Anuradhapura</option>
+    </select>*@
+
+@*<input type="submit" onclick="calcRoute();">*@
+@*</div>
+    <div id="directions_panel" style="margin:20px;background-color:#FFEE77;"></div>*@
+@*</div>*@
+
+<h2>TTB Winery Permits</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="tablesorter focus-highlight table-condensed tablesorter-blue table-bordered" role="grid">
+    <thead class="thead-dark">
+        <!-- add class="thead-light" for a light header -->
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PERMIT_NUMBER)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OWNER_NAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OPERATING_NAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.STREET)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CITY)
+            </th>
+            <th class="filter-select filter-exact" data-placeholder="Pick A State" data-value="IN">
+                @Html.DisplayNameFor(model => model.STATE)
+            </th>
+            <th class="filter-select filter-exact" data-placeholder="Pick A Zip">
+                @Html.DisplayNameFor(model => model.ZIP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZIP4)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COUNTY)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lng)
+            </th>
+
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PERMIT_NUMBER)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OWNER_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OPERATING_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.STREET)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CITY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.STATE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZIP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZIP4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.COUNTY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lng)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.WinePermitId }) <br />
+                @Html.ActionLink("Details", "Details", new { id = item.WinePermitId}) <br />
+                @Html.ActionLink("Delete", "Delete", new { id = item.WinePermitId })
+            </td>
+            @*<td>*@
+                @*@{
+                    var fullAddress = item.STREET + "," + item.CITY + "," + item.STATE + "," + item.ZIP;
+                    var locLatLng = MapRepository.Locate2(item);
+                }
+
+                @if (locLatLng != null)
+                {
+                    var latitude = locLatLng.Latitude;
+                    @latitude;
+                }*@
+            @*</td>*@
+        </tr>
+    }
+
+</table>
+
+<!-- pager-->
+<div id="pager">
+    <img src="~/Scripts/tablesorter-master/addons/pager/icons/first.png" class="first" />
+    <img src="~/Scripts/tablesorter-master/addons/pager/icons/prev.png" class="prev" />
+    <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+    <img src="~/Scripts/tablesorter-master/addons/pager/icons/next.png" class="next" />
+    <img src="~/Scripts/tablesorter-master/addons/pager/icons/last.png" class="last" />
+
+    <select class="pagesize" title="Select page size">
+        <option selected="selected" value="10">10</option>
+    </select>
+    <select class="gotoPage" title="Select page number"></select>
+</div>
+
+@*<script type="text/javascript" charset="utf-8">
+        $(function () {
+            // call the tablesorter plugin
+            $("table").tablesorter({
+                theme: 'blue'
+            })
+                //.tablesorterPager({
+
+                //    // target the pager markup - see the HTML block below
+                //    container: $("#pager"),
+
+                //    // target the pager page select dropdown - choose a page
+                //    cssGoto: ".pagenum",
+
+                //    // remove rows from the table to speed up the sort of large tables.
+                //    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+                //    removeRows: false,
+
+                //    // output string - default is '{page}/{totalPages}';
+                //    // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+                //    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+
+                //});
+                .tablesorterPager({ container: $("#pager") });
+
+            // Make table cell focusable
+            // http://css-tricks.com/simple-css-row-column-highlighting/
+            //if ($('.focus-highlight').length) {
+            //    $('.focus-highlight').find('td, th')
+            //        .attr('tabindex', '1')
+            //        // add touch device support
+            //        .on('touchstart', function () {
+            //            $(this).focus();
+            //        });
+            //}
+
+        });
+
+
+    </script>
+
+
+    @*<script>
+            var directionsDisplay;
+            var directionsService = new google.maps.DirectionsService();
+            var map;
+            function initialize() {
+                directionsDisplay = new google.maps.DirectionsRenderer();
+                //var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+                var lanka = new google.maps.LatLng(7.8772157, 80.7003428);
+                var mapOptions = {
+                    zoom: 7,
+                    center: lanka,
+                    mapTypeId: google.maps.MapTypeId.HYBRID,
+                    scrollwheel: false,
+                    navigationControl: false,
+                    mapTypeControl: false,
+                    scaleControl: false,
+                    draggable: false,
+                }
+                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                directionsDisplay.setMap(map);
+           }
+
+            //function calcRoute() {
+            //    //alert("test");
+            //    var start = document.getElementById('start').value;
+            //    var end = document.getElementById('end').value;
+            //    //alert(start);
+            //    var waypts = [];
+            //    // var checkboxArray = document.getElementsByName('city');//('waypoints');
+            //    var checkboxArray = new Array();//new Array();
+            //    //alert(checkboxArray);
+           //    $(".waypoints:checked").each(function (index, element) {
+            //        checkboxArray[index] = $(this).val();
+            //    });
+            //    //alert(checkboxArray.length);
+            //    //alert(checkboxArray[1]);
+            //    for (var i = 0; i < checkboxArray.length; i++) {
+            //        waypts.push({
+            //            location: checkboxArray[i],
+            //            stopover: true
+            //        });
+            //    }
+            //    //alert("sdgrs");
+           //    //var checkboxArray = document.getElementsByClassName('waypoints');
+            //    //var checkboxArray = document.getElementsByClassName('waypoints');
+            //    //alert(checkboxArray.length);
+            //    /*for (var i = 0; i < checkboxArray.length; i++) {
+            //    if (checkboxArray.options[i].checked == true) {
+            //    waypts.push({
+            //    location:checkboxArray[i].value,
+            //    stopover:true});
+            //    }
+            //    }*/
+            //    var request = {
+            //        origin: start,
+            //        destination: end,
+            //        waypoints: waypts,
+            //        optimizeWaypoints: true,
+            //        travelMode: google.maps.TravelMode.DRIVING
+            //    };
+            //    directionsService.route(request, function (response, status) {
+            //        if (status == google.maps.DirectionsStatus.OK) {
+            //            directionsDisplay.setDirections(response);
+            //            var route = response.routes[0];
+            //            var summaryPanel = document.getElementById('directions_panel');
+            //            summaryPanel.innerHTML = '';
+            //            // For each route, display summary information.
+            //            for (var i = 0; i < route.legs.length; i++) {
+            //                var routeSegment = i + 1;
+            //                summaryPanel.innerHTML += 'Route Segment: ' + routeSegment + '
+            //                ';
+            //                summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+            //                summaryPanel.innerHTML += route.legs[i].end_address + '
+            //                ';
+            //                summaryPanel.innerHTML += route.legs[i].distance.text + '
+            //                ';
+            //            }
+            //        }
+            //    });
+            //}
+            @*google.maps.event.addDomListener(window, 'load', initialize);
+
+        </script>*@
+@*</body>*@
+
+<script>
+    $(function () {
+
+        $("table").tablesorter({
+            theme: "bootstrap",
+
+            widthFixed: true,
+
+            // widget code contained in the jquery.tablesorter.widgets.js file
+            // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+            // the uitheme widget is NOT REQUIRED!
+            widgets: ["filter", "columns", "zebra"],
+
+            widgetOptions: {
+                // using the default zebra striping class name, so it actually isn't included in the theme variable above
+                // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+                zebra: ["even", "odd"],
+
+                // class names added to columns when sorted
+                columns: ["primary", "secondary", "tertiary"],
+
+                // reset filters button
+                filter_reset: ".reset",
+
+                // extra css class name (string or array) added to the filter element (input or select)
+                filter_cssFilter: [
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control custom-select', // select needs custom class names :(
+                    'form-control',
+                    'form-control',
+                    'form-control',
+                    'form-control'
+                ]
+
+            }
+        })
+            .tablesorterPager({
+
+                // target the pager markup - see the HTML block below
+                container: $("#pager"),
+
+                // target the pager page select dropdown - choose a page
+                cssGoto: ".pagenum",
+
+                // remove rows from the table to speed up the sort of large tables.
+                // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+                removeRows: false,
+
+                // output string - default is '{page}/{totalPages}';
+                // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+                output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+
+            });
+
+    });
+</script>
+

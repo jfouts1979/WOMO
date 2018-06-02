@@ -1,0 +1,171 @@
+﻿@*<img src="~/Content/grapesicon.jpg" alt="grapesicon">;*@
+<style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+        height: 400px;
+        width: 400px;
+    }
+
+    #out {
+        height: 400px;
+        width: 400px;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 20px;
+        background-color: #ffffc9;
+    }
+
+    p {
+        margin: 0;
+    }
+</style>
+<br /><br /><br />
+
+@*//***********************************************
+    //************** Map Marker Div *****************
+    //***********************************************@
+
+<div id="map"></div>
+
+@*//***********************************************
+    //************** Initializations ****************
+    //***********************************************@
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+
+
+    //***********************************************
+    //************* Get Geolocation *****************
+    //***********************************************
+
+    var map;
+    var latitudeGlobal;
+    var longitudeGlobal;
+    var watchId;
+
+    function onGetLocationSuccess(position) {
+        alert('here');
+        latitudeGlobal = position.coords.latitude;
+        longitudeGlobal = position.coords.longitude;
+        initMap();
+
+    }
+
+    function onGetLocationError() {
+
+        alert("Unable to retrieve your location");
+    }
+
+    //***********************************************
+    //************* Get User's Loc  *****************
+    //***********************************************
+
+    function getLocation(position) {
+
+        if (!navigator.geolocation) {
+            output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+            return;
+        }
+        var optn = {
+            enableHighAccuracy: true,
+            timeout: Infinity,
+            maximumAge: 0
+
+        }
+        var watchId = navigator.geolocation.watchPosition(onGetLocationSuccess, onGetLocationError, optn);
+
+
+    }
+
+    getLocation();
+    alert('here');
+
+    //***********************************************
+    //************* Initialize Map  *****************
+    //***********************************************
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'),
+            {
+                zoom: 9,
+                center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
+                mapTypeId: 'terrain'
+
+            });
+
+        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        var icons = {
+            parking: {
+                icon: iconBase + 'parking_lot_maps.png'
+            }
+        }
+
+        //******************************************************
+        //************* Ajax Get Marker Radius *****************
+        //******************************************************
+        //var data = {
+        //    lat: latitudeGlobal,
+        //    lng: longitudeGlobal,
+        //};
+
+        //$.ajax({
+        //    url: "/Map/GetRadiusMarkers",
+        //    data: data,
+        //    dataType: "json",
+        //    type: "GET",
+        //    contentType: 'application/json; charset=utf-8',
+        //    cache: false,
+
+        //    success: function (data) {
+        //        var infowindow = new google.maps.InfoWindow();
+        //        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        //        var centralMarker = new google.maps.Marker({
+        //            position: { lat: latitudeGlobal, lng: longitudeGlobal },
+        //            map: map,
+        //            icon: im
+        //        });
+        //    }
+        //});
+
+        //*** End Of Ajax ***//
+
+        function updateCenter(position) {
+            // The position getCurrentPosition passes, IS NOT a google.maps.LatLng object. First, we need to convert it:
+            var lati = position.coords.latitude;
+            var long = position.coords.longitude;
+            var mapCenter = new google.maps.LatLng({ lat: lati, lng: long });
+
+            // Update stuff, instead of reinitializing
+            var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+            var marker = new google.maps.Marker({
+                position: { lat: lati, lng: long },
+                icon: im
+            });
+            marker.setPosition({ lat: lati, lng: long });
+            map.setCenter({ lat: lati, lng: long });
+        }
+
+        options = {
+            enableHighAccuracy: true,
+            timeout: Infinity,
+            maximumAge: 0
+        };
+
+        function error(err) {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8">
+</script>
+
+<div id="out"></div>
+
