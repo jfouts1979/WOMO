@@ -137,6 +137,11 @@
         width: 100px;
         height: 200px;
     }
+
+    .placeImageDiv {
+        width: 200px;
+        height: 200px;
+    }
 </style>
 <br /><br /><br />
 
@@ -303,7 +308,8 @@
                             address +
                             '<br>' +
                             city + ', ' + state + '  ' + zip +
-                            '<div id="pano"></div>' +
+                            //'<div id="pano"></div>' +
+                            '<div id="photoDiv" class="theImg"></div>' +
                             '<br>' +
                             '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
                             '</div>' +
@@ -332,13 +338,14 @@
                             'click',
                             function () {
                                 infowindow.close();
+                                $('#photoDiv').empty();
 
                                 //wineryLatLng = ({ lat: latitude, lng: longitude });
 
                                 infowindow.setContent(contentString);
                                 infowindow.open(map, marker);
                                 infowindow.maxWidth = 350;
-                                initPan();
+                                //initPan();
 
 
                                 // Search for Google's office in Australia.
@@ -382,23 +389,36 @@
 
                                             });
                                             alert(place.photoUrl);
+                                            console.log(place.photoUrl);
+                                            var imgSrc =
+                                                '<img id=theImg src="' + place.photoUrl + '"</img>';
+                                            var stringPhoto = '<img class="theImg" src="' + place.photoUrl + '">';
+                                            console.log(imgSrc);
+                                            console.log(stringPhoto);
+                                            //$('#placeImageDiv').prepend($('#imgSrc'));
+                                            $(stringPhoto).appendTo($(".theImg"));
+
                                         }
                                     }
                                 }
 
+                           
+
+                               
+
                             });
 
 
-                        function initPan() {
-                            panorama = new google.maps.StreetViewPanorama(
-                                document.getElementById('pano'),
-                                {
-                                    position: { lat: latitude, lng: longitude },
-                                    pov: { heading: 165, pitch: 0 },
-                                    zoom: 1
-                                }
-                            );
-                        }
+                        //function initPan() {
+                        //    panorama = new google.maps.StreetViewPanorama(
+                        //        document.getElementById('pano'),
+                        //        {
+                        //            position: { lat: latitude, lng: longitude },
+                        //            pov: { heading: 165, pitch: 0 },
+                        //            zoom: 1
+                        //        }
+                        //    );
+                        //}
 
                         // *
                         // START INFOWINDOW CUSTOMIZE.
