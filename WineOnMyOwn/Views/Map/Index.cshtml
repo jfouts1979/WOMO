@@ -13,11 +13,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 @*<!-- Material Design Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/css/mdb.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/css/mdb.min.css" rel="stylesheet">
 
 
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/js/mdb.min.js"></script>*@
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.0/js/mdb.min.js"></script>*@
 
 
 <style>
@@ -59,7 +59,7 @@
 
     a.navbar-brand {
         font-family: 'Garamond' !important;
-                     font-size:18px;
+        font-size: 18px;
     }
 
     .navbar-brand:visited {
@@ -85,6 +85,7 @@
     #map img {
         max-width: none !important;
     }
+
     .gm-style-iw {
         width: 350px !important;
         top: 15px !important;
@@ -94,39 +95,45 @@
         border: 1px solid rgba(72, 181, 233, 0.6);
         border-radius: 2px 2px 10px 10px;
     }
+
     #iw-container {
         margin-bottom: 10px;
     }
-    #iw-container .iw-title {
-        font-family: 'Open Sans Condensed', sans-serif;
-        font-size: 22px;
-        font-weight: 400;
-        padding: 10px;
-        background-color: #48b5e9;
-        color: white;
-        margin: 0;
-        border-radius: 2px 2px 0 0;
-        width: 350px;
-    }
-    #iw-container .iw-content {
-        font-size: 13px;
-        line-height: 18px;
-        font-weight: 400;
-        margin-right: 1px;
-        padding: 15px 5px 20px 15px;
-        max-height: 140px;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
+
+        #iw-container .iw-title {
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            padding: 10px;
+            background-color: #48b5e9;
+            color: white;
+            margin: 0;
+            border-radius: 2px 2px 0 0;
+            width: 350px;
+        }
+
+        #iw-container .iw-content {
+            font-size: 13px;
+            line-height: 18px;
+            font-weight: 400;
+            margin-right: 1px;
+            padding: 15px 5px 20px 15px;
+            max-height: 140px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
     .iw-content img {
         float: right;
-        margin: 0 5px 5px 10px;	
+        margin: 0 5px 5px 10px;
     }
+
     .iw-subTitle {
         font-size: 16px;
         font-weight: 700;
         padding: 5px 0;
     }
+
     .iw-bottom-gradient {
         position: absolute;
         width: 326px;
@@ -139,12 +146,10 @@
         background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
     }
 
-    #panorama {
-        width: 25%;
+    #pano {
+        width: 100px;
         height: 200px;
     }
-
-
 </style>
 <br /><br /><br />
 
@@ -184,36 +189,6 @@
         </button>
     </div>
 </div>
-
-@*<!--Grid row-->
-    <div class="row">
-
-        <!--Grid column-->
-        <div class="col-md-6">
-
-            <!--Card-->
-            <div class="card card-cascade narrower">
-
-                <!--Card image-->
-                <div class="view gradient-card-header blue-gradient">
-                    <h5 class="mb-0">Regular map</h5>
-                </div>
-                <!--/Card image-->
-                <!--Card content-->
-                <div class="card-body text-center">
-
-                    <!--Google map-->
-                    <div id="map" class="z-depth-1" style="height: 420px"></div>
-
-                </div>
-                <!--/.Card content-->
-
-            </div>
-            <!--/.Card-->
-
-        </div>
-        <!--Grid column-->
-    </div>*@
 
 @*//***********************************************
     //************** Initializations ****************
@@ -299,7 +274,7 @@
         };
 
         infowindow = new google.maps.InfoWindow({});
-        
+
 
         $.ajax({
             url: "/Map/GetRadiusMarkers",
@@ -326,46 +301,43 @@
                         var address = data[index].STREET;
                         var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
-                        wineryLatLng = ({lat: latitude, lng: longitude});
-                        
-                        sv.getPanorama({ location: wineryLatLng, radius: 100}, processSVData);
 
-                        function processSVData(wineryLatLng, status) {
+                        //function processSVData(wineryLatLng, status) {
 
-                            if (status === google.maps.StreetViewStatus.OK) {
-                                console.log('creating panorama');
-                                panorama = new google.maps.StreetViewPanorama(document.querySelector("#panorama"));
-                                panorama.setPosition(wineryLatLng);
-                                panorama.setPov(({
-                                    heading: 265,
-                                    pitch: 0
-                                }));
-                                panorama.setEnableCloseButton(false);
-                                panorama.setVisible(true);
-                            } else {
-                                console.error('Street View data not found for this location.');
-                            }
-                        }
+                        //    if (status === google.maps.StreetViewStatus.OK) {
+                        //        console.log('creating panorama');
+                        //        panorama = new google.maps.StreetViewPanorama(document.querySelector("#panorama"));
+                        //        panorama.setPosition(wineryLatLng);
+                        //        panorama.setPov(({
+                        //            heading: 265,
+                        //            pitch: 0
+                        //        }));
+                        //        panorama.setEnableCloseButton(false);
+                        //        panorama.setVisible(true);
+                        //    } else {
+                        //        console.error('Street View data not found for this location.');
+                        //    }
+                        //}
 
                         var contentString =
                             '<div id="iw-container">' +
-                                '<div class="iw-title">' +
-                                winery +
-                                '</div>' +
-                                '<p>' +
-                                '<br>' +
-                                '<div class="iw-content">' +
-                                address +
-                                '<br>' +
-                                city + ', ' + state + '  ' + zip +
-                                '<div id="panorama"></div>' +
-                                '<br>' +
-                                '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
-                                '</div>' +
-                                '</p>' +
-                                '<div class="iw-bottom-gradient">' +
-                                '</div>' +
-                                '</div>';
+                            '<div class="iw-title">' +
+                            winery +
+                            '</div>' +
+                            '<p>' +
+                            '<br>' +
+                            '<div class="iw-content">' +
+                            address +
+                            '<br>' +
+                            city + ', ' + state + '  ' + zip +
+                            '<div id="pano"></div>' +
+                            '<br>' +
+                            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
+                            '</div>' +
+                            '</p>' +
+                            '<div class="iw-bottom-gradient">' +
+                            '</div>' +
+                            '</div>';
 
 
                         //// InfoWindow content
@@ -381,10 +353,44 @@
 
                         google.maps.event.addListener(marker, 'click', function () {
                             infowindow.close();
+
+                            wineryLatLng = ({ lat: latitude, lng: longitude });
+
+                            //var panoramaOptions = {
+                            //    addressControl: false,
+                            //    position: wineryLatLng,
+                            //    pov: {
+                            //        heading: 34,
+                            //        pitch: 10,
+                            //        zoom: 0
+                            //    },
+                            //    //setEnableCloseButton: false,
+                            //    visible: true
+                            //};
+
+                            //var pano = new google.maps.StreetViewPanorama(document.getElementById('panorama'), panoramaOptions);
+
+
                             infowindow.setContent(contentString);
                             infowindow.open(map, marker);
                             infowindow.maxWidth = 350;
+                            initPan();
                         });
+
+                        
+                        function initPan() {
+                            panorama = new google.maps.StreetViewPanorama(
+                                document.getElementById('pano'),
+                                {
+                                    position: { lat: latitude, lng: longitude },
+                                    radius: 200,
+                                    //position: {lat: 37.869260, lng: -122.254811},
+                                    //position: { lat: 38.2436719, lng: -85.71024349999999},
+                                    pov: {heading: 165, pitch: 0},
+                                    zoom: 1
+                                }
+                            );
+                         }
 
                         // *
                         // START INFOWINDOW CUSTOMIZE.
@@ -452,17 +458,7 @@
 
     getLocation();
 
-    //May come in handy later...
-    //google.maps.event.addListener(iMap.map, 'zoom_changed', function () {
-    //    for (var i = 0; i < iMap.circle.length; i++) {
-    //        var p = Math.pow(2, (21 - iMap.map.getZoom()));
-    //        iMap.circle[i].setRadius(p * 1128.497220 * 0.0027);
-    //    }
-
-    //    menu.hide();
-    //});
-
-    $("#initradius").blur(function() {
+    $("#initradius").blur(function () {
 
         initRadius = $('#initradius').val();
         initMap();
@@ -472,16 +468,16 @@
 
     $('#initradius').keypress(function (e) {
         var key = e.which;
-        if(key == 13)  // the enter key code
+        if (key == 13)  // the enter key code
         {
             initRadius = $('#initradius').val();
             initMap();
             specialZoom2();
         }
-    });   
+    });
 
     function specialZoom2() {
-        map.setZoom(Math.round(14 - Math.log(initRadius) / Math.LN2)-1);
+        map.setZoom(Math.round(14 - Math.log(initRadius) / Math.LN2) - 1);
     }
 
     function drawCircle() {
@@ -519,14 +515,30 @@
 
     function initMap() {
         var initCenter = { lat: latitudeGlobal, lng: longitudeGlobal };
-        sv = new google.maps.StreetViewService();
-        wineryLatLng = new google.maps.LatLng;
+        //sv = new google.maps.StreetViewService();
+        //panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
+
+
+
+        //panorama = new google.maps.StreetViewPanorama(
+        //    document.getElementById('pano'),
+        //    {
+        //        position: { lat: latitudeGlobal, lng: longitudeGlobal },
+        //        pov: {heading: 165, pitch: 0},
+        //        zoom: 1
+        //    });
+
+        // Set the initial Street View camera to the center of the map
+        //sv.getPanorama({ location: initCenter, radius: 50 }, processSVData);
+
+
+        //wineryLatLng = new google.maps.LatLng;
         map = new google.maps.Map(document.getElementById('map'),
             {
                 zoom: 9,
                 center: new google.maps.LatLng(latitudeGlobal, longitudeGlobal),
                 mapTypeId: 'terrain',
-                disableDefaultUI: true
+               // disableDefaultUI: true
             });
         var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
         ogmarker = new google.maps.Marker({
@@ -534,6 +546,43 @@
             icon: im,
             map: map
         });
+
+        // Look for a nearby Street View panorama when the map is clicked.
+        // getPanorama will return the nearest pano when the given
+        // radius is 50 meters or less.
+        //map.addListener('click', function(event) {
+        //    sv.getPanorama({location: event.latLng, radius: 50}, processSVData);
+        //});
+
+        //function processSVData(data, status) {
+        //    if (status === 'OK') {
+        //        var marker = new google.maps.Marker({
+        //            position: data.location.latLng,
+        //            map: map,
+        //            title: data.location.description
+        //        });
+
+        //        panorama.setPano(data.location.pano);
+        //        panorama.setPov({
+        //            heading: 270,
+        //            pitch: 0
+        //        });
+        //        panorama.setVisible(true);
+
+        //        marker.addListener('click', function() {
+        //            var markerPanoID = data.location.pano;
+        //            // Set the Pano to use the passed panoID.
+        //            panorama.setPano(markerPanoID);
+        //            panorama.setPov({
+        //                heading: 270,
+        //                pitch: 0
+        //            });
+        //            panorama.setVisible(true);
+        //        });
+        //    } else {
+        //        console.error('Street View data not found for this location.');
+        //    }
+        //}
 
         drawCircle(initRadius);
 
@@ -543,14 +592,10 @@
             var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
             map.setCenter(center);
-            
+
         });
 
-
-
     }
-
-
 
     function updateCenter() {
         var newLatLng = { lat: latitudeGlobal, lng: longitudeGlobal };
@@ -566,8 +611,6 @@
         };
     }
 
-
-
     function error(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
     }
@@ -575,57 +618,11 @@
     //var id = navigator.geolocation.watchPosition(updateCenter, error, options);
 
 //        img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + static map api key
-
-
-
-
-
-
     /*
  * 5 ways to customize the Google Maps infowindow
  * 2015 - en.marnoto.com
  * http://en.marnoto.com/2014/09/5-formas-de-personalizar-infowindow.html
 */
-
-    //function initialize() {
-    //var mapOptions = {
-    //    center: center,
-    //    zoom: 16,
-    //    mapTypeId: google.maps.MapTypeId.ROADMAP
-    //};
-
-    //var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-
-
-    //// A new Info Window is created and set content
-    //var infowindow = new google.maps.InfoWindow({
-    //    content: content,
-
-    //    // Assign a maximum value for the width of the infowindow allows
-    //    // greater control over the various content elements
-    //    maxWidth: 350
-    //});
-
-    //// marker options
-    //var marker = new google.maps.Marker({
-    //    position: factory,
-    //    map: map,
-    //    title: "Porcelain Factory of Vista Alegre"
-    //});
-
-    // This event expects a click on a marker
-    // When this event is fired the Info Window is opened.
-    //google.maps.event.addListener(marker, 'click', function () {
-    //    infowindow.open(map, marker);
-    //});
-
-    //// Event that closes the Info Window with a click on the map
-    //google.maps.event.addListener(map, 'click', function () {
-    //    infowindow.close();
-    //});
-    //}
-    //google.maps.event.addDomListener(window, 'load', initialize);
 
 </script>
 <script async defer
