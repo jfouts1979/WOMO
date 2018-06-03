@@ -85,6 +85,7 @@
 
     #iw-container {
         margin-bottom: 10px;
+        overflow-y: scroll;
     }
 
         #iw-container .iw-title {
@@ -208,7 +209,8 @@
     var panorama;
     var wineryLatLng;
     var service;
-    var placeIDForPhoto;
+
+    var markers = [];
 
     function onGetLocationSuccess(position) {
 
@@ -267,7 +269,7 @@
             radius: initRadius
         };
 
-        infowindow = new google.maps.InfoWindow({});
+
         service = new google.maps.places.PlacesService(map);
 
 
@@ -297,192 +299,183 @@
                         var latitude = data[index].Lat;
                         var longitude = data[index].Lng;
 
-                        var contentString =
-                            '<div id="iw-container">' +
-                            '<div class="iw-title">' +
-                            winery +
-                            '</div>' +
-                            '<p>' +
-                            '<br>' +
-                            '<div class="iw-content">' +
-                            address +
-                            '<br>' +
-                            city + ', ' + state + '  ' + zip +
-                            //'<div id="pano"></div>' +
-                            '<div id="photoDiv" class="theImg"></div>' +
-                            '<br>' +
-                            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
-                            '</div>' +
-                            '</p>' +
-                            '<div class="iw-bottom-gradient">' +
-                            '</div>' +
-                            '</div>';
-
-
-
-
-
 
                         //// InfoWindow content
 
                         var latLng = new google.maps.LatLng(latitude, longitude);
                         var marker = new google.maps.Marker({
                             position: latLng,
+                            address: address + '<br>' + city + ", " + state + "  " + zip,
                             map: map,
                             icon: "/Content/Picture2.png",
                             title: winery
                         });
 
-
                         google.maps.event.addListener(marker,
-                            'click',
-                            function () {
-                                infowindow.close();
-                                $('#photoDiv').empty();
+                            'click', function (evt) { onMarkerClicked(evt) });
 
-                                //wineryLatLng = ({ lat: latitude, lng: longitude });
-
-                                infowindow.setContent(contentString);
-                                infowindow.open(map, marker);
-                                infowindow.maxWidth = 350;
-                                //initPan();
-
-
-                                // Search for Google's office in Australia.
-                                var request = {
-                                    location: ({ lat: latitude, lng: longitude }),
-                                    radius: '10', //max is 50000 meters
-                                    //query: 'Huber Winery',
-                                    language: 'en'
-                                    //can use minprice and maxprice
-                                    //can show those places only open now
-                                };
-
-                                service = new google.maps.places.PlacesService(map);
-                                service.nearbySearch(request, callback);
-
-                                function callback(results, status) {
-                                    if (status == google.maps.places.PlacesServiceStatus.OK) {
-                                        placeIDForPhoto = results[0].place_id;
-                                    }
-
-                                    //**************************************
-
-                                    var requestForDetails = {
-                                        placeId: placeIDForPhoto
-                                    }
-
-                                    service.getDetails(requestForDetails, callbackDetails);
-
-                                    //This has all kinds of good stuff
-                                    //Like open hours, type of venue, etc...
-                                    //Also includes link to photos coded as URL
-
-                                    function callbackDetails(requestForDetails, status) {
-                                        if (status == google.maps.places.PlacesServiceStatus.OK) {
-                                            //console.log(place);
-                                            //photo: typeof results[i].photos !== 'undefined'
-                                            //    ? results[i].photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100})
-                                            place = new Object({
-                                                name: requestForDetails.name,
-                                                photoUrl: requestForDetails.photos[0].getUrl({ 'maxWidth': 100, 'maxHeight': 100 })
-
-                                            });
-                                            alert(place.photoUrl);
-                                            console.log(place.photoUrl);
-                                            var imgSrc =
-                                                '<img id=theImg src="' + place.photoUrl + '"</img>';
-                                            var stringPhoto = '<img class="theImg" src="' + place.photoUrl + '">';
-                                            console.log(imgSrc);
-                                            console.log(stringPhoto);
-                                            //$('#placeImageDiv').prepend($('#imgSrc'));
-                                            $(stringPhoto).appendTo($(".theImg"));
-
-                                        }
-                                    }
-                                }
-
-                           
-
-                               
-
-                            });
-
-
-                        //function initPan() {
-                        //    panorama = new google.maps.StreetViewPanorama(
-                        //        document.getElementById('pano'),
-                        //        {
-                        //            position: { lat: latitude, lng: longitude },
-                        //            pov: { heading: 165, pitch: 0 },
-                        //            zoom: 1
-                        //        }
-                        //    );
-                        //}
-
-                        // *
-                        // START INFOWINDOW CUSTOMIZE.
-                        // The google.maps.event.addListener() event expects
-                        // the creation of the infowindow HTML structure 'domready'
-                        // and before the opening of the infowindow, defined styles are applied.
-                        // *
-                        google.maps.event.addListener(infowindow, 'domready', function () {
-
-                            // Reference to the DIV that wraps the bottom of infowindow
-                            var iwOuter = $('.gm-style-iw');
-
-                            /* Since this div is in a position prior to .gm-div style-iw.
-                             * We use jQuery and create a iwBackground variable,
-                             * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
-                            */
-                            var iwBackground = iwOuter.prev();
-
-                            // Removes background shadow DIV
-                            iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
-
-                            // Removes white background DIV
-                            iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
-
-                            // Moves the infowindow 115px to the right.
-                            //iwOuter.parent().parent().css({ left: '115px' });
-
-                            // Moves the shadow of the arrow 76px to the left margin.
-                            iwBackground.children(':nth-child(1)').attr('style', function (i, s) { return s + 'left: 76px !important;' });
-
-                            // Moves the arrow 76px to the left margin.
-                            iwBackground.children(':nth-child(3)').attr('style', function (i, s) { return s + 'left: 76px !important;' });
-
-                            // Changes the desired tail shadow color.
-                            iwBackground.children(':nth-child(3)').find('div').children().css({ 'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index': '1' });
-
-                            // Reference to the div that groups the close button elements.
-                            var iwCloseBtn = iwOuter.next();
-
-                            // Apply the desired effect to the close button
-                            iwCloseBtn.css({ opacity: '1', right: '38px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9' });
-
-                            // If the content of infowindow not exceed the set maximum height, then the gradient is removed.
-                            if ($('.iw-content').height() < 140) {
-                                $('.iw-bottom-gradient').css({ display: 'none' });
-                            }
-
-                            // The API automatically applies 0.7 opacity to the button after the mouseout event. This function reverses this event to the desired value.
-                            iwCloseBtn.mouseout(function () {
-                                $(this).css({ opacity: '1' });
-                            });
-
-                            // Event that closes the Info Window with a click on the map
-                            google.maps.event.addListener(map, 'click', function () {
-                                infowindow.close();
-                            });
-                        });
+                        markers.push(marker);
                     });
-
             }
         });
 
-        //*** End Of Ajax ***//
     }
+
+    //*** End Of Ajax ***//
+
+    function onMarkerClicked(evt) {
+        infowindow.close();
+        var clickedMarker;
+        markers.forEach(
+            function (m) {
+                if (evt.latLng.lat() === m.position.lat() && evt.latLng.lng() === m.position.lng()) {
+                    clickedMarker = m;
+                }
+            });
+
+        //initPan();
+        var request = {
+            location: ({ lat: evt.latLng.lat(), lng: evt.latLng.lng() }),
+            //location: ({ lat: latitude, lng: longitude }),
+            radius: 10, //max is 50000 meters
+            //query: 'Huber Winery',
+            language: 'en'
+            //can use minprice and maxprice
+            //can show those places only open now
+        };
+
+        console.info(request);
+
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, callback);
+
+        function callback(results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                var requestForDetails = {
+                    placeId: results[0].place_id
+                }
+                console.info("Place id" + requestForDetails.placeId);
+                service.getDetails(requestForDetails, callbackDetails);
+            } else {
+                request.radius += 5;
+                if (request.radius > 150) return;
+                console.info("searching a radius of " + request.radius + "...");
+                service.nearbySearch(request, callback);
+            }
+        }
+        //**************************************
+
+
+
+        //This has all kinds of good stuff
+        //Like open hours, type of venue, etc...
+        //Also includes link to photos coded as URL
+
+        function callbackDetails(responseDetails, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+                var place = new Object({
+                    name: responseDetails.name
+                });
+
+                //console.info(responseDetails);
+                //console.info("Response has " + responseDetails.photos.length + " photos!");
+                if (responseDetails && responseDetails.photos)
+                    place.photoUrl = responseDetails.photos[0].getUrl({
+                        'maxWidth': 200,
+                        'maxHeight': 200
+                    });
+
+
+                var windowDetails = {
+                    winery: clickedMarker.title,
+                    address: clickedMarker.address,
+                    photoUrl: place.photoUrl
+                }
+
+                infowindow.setContent(getWindowContent(windowDetails));
+
+                console.info(clickedMarker);
+                infowindow.open(map, clickedMarker);
+                infowindow.maxWidth = 650;
+
+                // *
+                // START INFOWINDOW CUSTOMIZE.
+                // The google.maps.event.addListener() event expects
+                // the creation of the infowindow HTML structure 'domready'
+                // and before the opening of the infowindow, defined styles are applied.
+                // *
+                google.maps.event.addListener(infowindow,
+                    'domready',
+                    function () {
+
+                        // Reference to the DIV that wraps the bottom of infowindow
+                        var iwOuter = $('.gm-style-iw');
+
+                        /* Since this div is in a position prior to .gm-div style-iw.
+                         * We use jQuery and create a iwBackground variable,
+                         * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+                        */
+                        var iwBackground = iwOuter.prev();
+
+                        // Removes background shadow DIV
+                        iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
+
+                        // Removes white background DIV
+                        iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
+
+                        // Moves the infowindow 115px to the right.
+                        //iwOuter.parent().parent().css({ left: '115px' });
+
+                        // Moves the shadow of the arrow 76px to the left margin.
+                        iwBackground.children(':nth-child(1)').attr('style',
+                            function (i, s) { return s + 'left: 76px !important;' });
+
+                        // Moves the arrow 76px to the left margin.
+                        iwBackground.children(':nth-child(3)').attr('style',
+                            function (i, s) { return s + 'left: 76px !important;' });
+
+                        // Changes the desired tail shadow color.
+                        iwBackground.children(':nth-child(3)').find('div').children().css({
+                            'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px',
+                            'z-index': '1'
+                        });
+
+                        // Reference to the div that groups the close button elements.
+                        var iwCloseBtn = iwOuter.next();
+
+                        // Apply the desired effect to the close button
+                        iwCloseBtn.css({
+                            opacity: '1',
+                            right: '38px',
+                            top: '3px',
+                            border: '7px solid #48b5e9',
+                            'border-radius': '13px',
+                            'box-shadow': '0 0 5px #3990B9'
+                        });
+
+                        // If the content of infowindow not exceed the set maximum height, then the gradient is removed.
+                        if ($('.iw-content').height() < 140) {
+                            $('.iw-bottom-gradient').css({ display: 'none' });
+                        }
+
+                        // The API automatically applies 0.7 opacity to the button after the mouseout event. This function reverses this event to the desired value.
+                        iwCloseBtn.mouseout(function () {
+                            $(this).css({ opacity: '1' });
+                        });
+
+                        // Event that closes the Info Window with a click on the map
+                        google.maps.event.addListener(map,
+                            'click',
+                            function () {
+                                infowindow.close();
+                            });
+
+                    });
+            }
+        }
+    }
+    
 
     getLocation();
 
@@ -557,6 +550,8 @@
             map: map
         });
 
+        infowindow = new google.maps.InfoWindow({});
+
 
         drawCircle(initRadius);
 
@@ -595,13 +590,39 @@
 
     //var id = navigator.geolocation.watchPosition(updateCenter, error, options);
 
-//        img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + static map api key
+    //        img.src = "http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDqqYpXNkyOXi_XBkMTyUkFexUh0I3U0UI&center=" + static map api key
     /*
  * 5 ways to customize the Google Maps infowindow
  * 2015 - en.marnoto.com
  * http://en.marnoto.com/2014/09/5-formas-de-personalizar-infowindow.html
 */
 
+    function getWindowContent(wd) {
+        if (!wd) return "";
+
+        var contentString =
+            '<div id="iw-container">' +
+            '<div class="iw-title">' +
+            (wd.winery || '') +
+            '</div>' +
+            '<p>' +
+            '<br>' +
+            '<div class="iw-content">' +
+            (wd.address || '') +
+            //'<div id="pano"></div>' +
+            '<div id="photoDiv" class="theImg">' +
+            (wd.photoUrl ? '<img class="theImg" src="' + wd.photoUrl + '" >' : '')
+            + '</div>' +
+            '<br>' +
+            '<a href="member_detail.cfm?ID=#Client_ID#">View Details</a></p>' +
+            '</div>' +
+            '</p>' +
+            '<div class="iw-bottom-gradient">' +
+            '</div>' +
+            '</div>';
+
+        return contentString;
+    }
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV9jnDSFNYrVPOdqVukVUU3WpALVBTTx8&libraries=places">
