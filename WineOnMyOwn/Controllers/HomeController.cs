@@ -15,14 +15,14 @@ namespace WineOnMyOwn.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "About WOMO.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contact John R. Fouts, MBA";
 
             return View();
         }
